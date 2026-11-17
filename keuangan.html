@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#025c90">
+<title>Keuangan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="application-name" content="GoPay">
+<meta name="apple-mobile-web-app-title" content="GoPay">
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/install.css">
+<style>.ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:0 32px calc(61px + var(--safe-b));text-align:center}.ph h1{font-size:17.4px;font-weight:700}.ph p{font-size:12.5px;line-height:18px;color:var(--muted)}</style>
+</head>
+<body data-tab="Keuangan">
+<script>try{if(localStorage.getItem('gp_theme')==='light')document.body.classList.add('light')}catch(e){}</script>
+<div class="app" id="app"><div id="ui">
+<!-- Ganti blok .ph ini dengan isi halaman Keuangan. Pertahankan <nav>, css/shared.css dan js/core.js. -->
+<div class="scroll" id="scroll"><div class="ph"><h1>Keuangan</h1><p>Halaman Keuangan belum direkonstruksi di berkas ini.</p></div></div>
+<nav class="nav">
+  <a class="ni" style="left:0" data-tab="Beranda" href="index.html"><i class="pl"></i><i class="mi"></i><span class="lb">Beranda</span></a>
+  <a class="ni on" style="left:72px" data-tab="Keuangan" href="keuangan.html" aria-current="page"><i class="pl"></i><i class="mi"></i><span class="lb">Keuangan</span></a>
+  <span class="ql">QRIS</span>
+  <button class="qr" data-t="Pemindai QRIS memerlukan akses kamera dan layanan GoPay" aria-label="QRIS"></button>
+  <a class="ni" style="left:216px" data-tab="Riwayat" href="riwayat.html"><i class="pl"></i><i class="mi"></i><span class="lb">Riwayat</span></a>
+  <a class="ni" style="left:288px" data-tab="Profil" href="profil.html"><i class="pl"></i><i class="mi"></i><span class="lb">Profil</span></a>
+</nav>
+
+<div class="toast" id="toast"></div>
+</div></div>
+
+<script src="js/core.js"></script>
+<script src="js/install.js"></script>
+<script src="update.js"></script>
+</body>
+</html>
