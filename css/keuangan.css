@@ -1,0 +1,74 @@
+/* css/keuangan.css — halaman Keuangan. Ukuran dalam dp pada lebar 360 (diskalakan core.js).
+   Font: Inter lokal (assets/fonts/), sama dengan tab Riwayat. */
+@font-face{font-family:'KgInter';font-weight:400;font-style:normal;font-display:swap;src:url(../assets/fonts/inter-400.woff) format('woff')}
+@font-face{font-family:'KgInter';font-weight:500;font-style:normal;font-display:swap;src:url(../assets/fonts/inter-500.woff) format('woff')}
+@font-face{font-family:'KgInter';font-weight:600;font-style:normal;font-display:swap;src:url(../assets/fonts/inter-600.woff) format('woff')}
+@font-face{font-family:'KgInter';font-weight:700;font-style:normal;font-display:swap;src:url(../assets/fonts/inter-700.woff) format('woff')}
+
+body[data-tab="Keuangan"]{--kg-cy:#00aed6;--kg-gr:#0a8a0a;--kg-sub:#c3c7cb;--kg-seam:#0c0e0f;--kg-stitch:#33383d;--kg-shadow:rgba(0,0,0,.38);
+  --kg-pill-bg1:#0c2410;--kg-pill-bg2:#10301a;--kg-pill-bd:#145a22;--kg-pill-glow:#1d7a8f;--kg-pill-tx:#cdd6d1;--kg-pill-ar:#14a826;
+  --kg-promo1:#0f4a59;--kg-promo2:#123642;--kg-promo-bd:#1d6b7c;--kg-promo-sub:#b4cdd3;--kg-promo-go:#0b87ab;
+  --kg-add-bg:#0f2514;--kg-add-bd:#14461c}
+body.light[data-tab="Keuangan"]{--kg-sub:#5d666d;--kg-seam:#dde2e6;--kg-stitch:#b9c1c7;--kg-shadow:rgba(30,40,50,.12);
+  --kg-pill-bg1:#e3f3e5;--kg-pill-bg2:#e9f6eb;--kg-pill-bd:#b9ddbd;--kg-pill-glow:#9fd3e0;--kg-pill-tx:#35523b;
+  --kg-promo1:#d1eef6;--kg-promo2:#e1f4f9;--kg-promo-bd:#a9d9e6;--kg-promo-sub:#4b6a73;--kg-add-bg:#e9f5ea;--kg-add-bd:#b9ddbd}
+
+body[data-tab="Keuangan"] .top,body[data-tab="Keuangan"] .kg{font-family:'KgInter','Inter',system-ui,sans-serif;letter-spacing:0}
+body[data-tab="Keuangan"] .scroll{top:calc(52px + var(--safe-t))}
+body[data-tab="Keuangan"] .top{position:absolute;left:0;right:0;top:0;height:calc(52px + var(--safe-t));padding-top:var(--safe-t);background:var(--page);z-index:5}
+body[data-tab="Keuangan"] .top h1{position:absolute;left:23px;bottom:14px;font-size:16.5px;font-weight:700;line-height:22px}
+body[data-tab="Keuangan"] .kg{padding:16px 0 calc(86px + var(--safe-b))}
+
+/* banner promo */
+body[data-tab="Keuangan"] .promo{display:flex;align-items:center;width:calc(100% - 30px);height:52px;margin:0 15px;padding:0 7.5px 0 15px;border-radius:26px;text-align:left;
+  background:linear-gradient(120deg,var(--kg-promo1),var(--kg-promo2));border:1px solid var(--kg-promo-bd);box-shadow:inset 0 1px 12px rgba(80,200,220,.16)}
+body[data-tab="Keuangan"] .promo .gi{flex:none;width:25px;height:25px;margin-right:12px}
+body[data-tab="Keuangan"] .promo .pt{flex:1;min-width:0;line-height:1}
+body[data-tab="Keuangan"] .promo b{display:block;font-size:12.4px;font-weight:600;line-height:17px;color:var(--txt)}
+body[data-tab="Keuangan"] .promo small{display:block;font-size:10.8px;line-height:15px;color:var(--kg-promo-sub);margin-top:1px}
+body[data-tab="Keuangan"] .promo .go{flex:none;width:37px;height:30px;border-radius:15px;background:var(--kg-promo-go);display:grid;place-items:center}
+body[data-tab="Keuangan"] .promo .go svg{width:17px;height:17px;color:#fff}
+
+/* judul bagian */
+body[data-tab="Keuangan"] .sh{display:flex;align-items:center;justify-content:space-between;margin:23px 15px 12px 23px;height:37px}
+body[data-tab="Keuangan"] .sh.p{height:22px;margin:11px 15px 10px 23px}
+body[data-tab="Keuangan"] .sh h2{font-size:14.5px;font-weight:700;line-height:22px}
+body[data-tab="Keuangan"] .add{display:flex;align-items:center;gap:6px;height:37px;padding:0 10px 0 14px;border-radius:19px;background:var(--kg-add-bg);border:1px solid var(--kg-add-bd);font-size:12.5px;font-weight:600}
+body[data-tab="Keuangan"] .add i{width:16px;height:16px;border-radius:50%;border:1.6px solid #12a012;position:relative}
+body[data-tab="Keuangan"] .add i::before,body[data-tab="Keuangan"] .add i::after{content:"";position:absolute;left:50%;top:50%;background:#12a012;border-radius:1px;transform:translate(-50%,-50%)}
+body[data-tab="Keuangan"] .add i::before{width:8px;height:1.8px}
+body[data-tab="Keuangan"] .add i::after{width:1.8px;height:8px}
+
+/* kartu bertumpuk seperti dompet */
+body[data-tab="Keuangan"] .stack{padding:0 15px}
+body[data-tab="Keuangan"] .kc{position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;width:100%;height:var(--h);margin-top:-20px;padding:14px 15px 0;text-align:left;overflow:hidden;
+  border-radius:20px 20px 0 0;background:var(--card);box-shadow:0 -4px 10px var(--kg-shadow)}
+body[data-tab="Keuangan"] .kc:first-child{margin-top:0}
+body[data-tab="Keuangan"] .kc:active{filter:brightness(1.12)}
+body[data-tab="Keuangan"] .kr{flex:none;display:flex;align-items:center;gap:8px}
+body[data-tab="Keuangan"] .kr.t{align-items:flex-start}
+body[data-tab="Keuangan"] .ki{flex:none;width:24px;height:24px;border-radius:50%;background:var(--kg-cy);display:grid;place-items:center;color:#fff}
+body[data-tab="Keuangan"] .ki svg{width:14.5px;height:14.5px}
+body[data-tab="Keuangan"] .ki.rp{font-size:9.5px;font-weight:800;letter-spacing:-.2px}
+body[data-tab="Keuangan"] .ki.bk{background:none}
+body[data-tab="Keuangan"] .ki.bk svg{width:24px;height:24px;color:#14d0e6}
+body[data-tab="Keuangan"] .kr.t .ki{margin-top:-1px}
+body[data-tab="Keuangan"] .kx{flex:1;min-width:0}
+body[data-tab="Keuangan"] .kx b{display:block;font-size:12px;font-weight:600;line-height:17px}
+body[data-tab="Keuangan"] .kx small{display:block;font-size:10.8px;line-height:15px;margin-top:2px;color:var(--kg-sub);padding-right:0}
+body[data-tab="Keuangan"] .kx .ut{display:flex;align-items:center;gap:4px;margin-top:7px;font-size:11.2px;font-weight:600;color:var(--kg-sub)}
+body[data-tab="Keuangan"] .kx .ut svg{width:9px;height:9px;color:#ff3b57}
+body[data-tab="Keuangan"] .amt{flex:none;font-size:11.8px;font-weight:500;line-height:17px;margin-top:0}
+body[data-tab="Keuangan"] .cnt{flex:none;font-size:11.2px;font-weight:500}
+body[data-tab="Keuangan"] .pl2{flex:none;width:15.5px;height:15.5px;border-radius:50%;background:var(--kg-gr);display:grid;place-items:center;color:#031003}
+body[data-tab="Keuangan"] .pl2 svg{width:9px;height:9px}
+
+/* pil hijau di dalam kartu */
+body[data-tab="Keuangan"] .pill{display:flex;align-items:center;gap:9px;height:37px;margin-top:17px;padding:0 8px 0 13px;border-radius:19px;color:var(--kg-pill-tx);font-size:10.8px;
+  background:linear-gradient(90deg,var(--kg-pill-bg1),var(--kg-pill-bg2) 55%,var(--kg-pill-bg1));border:1px solid var(--kg-pill-bd);box-shadow:inset 0 -1px 0 var(--kg-pill-glow)}
+body[data-tab="Keuangan"] .pill .pi{flex:none;width:17px;height:17px}
+body[data-tab="Keuangan"] .pill span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body[data-tab="Keuangan"] .pill .pa{flex:none;width:17px;height:17px;color:var(--kg-pill-ar)}
+
+/* tepi dompet: jahitan putus-putus bergelombang */
+body[data-tab="Keuangan"] .seam{display:block;width:100%;height:27px;position:relative;z-index:2}

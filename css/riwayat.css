@@ -1,0 +1,122 @@
+/* css/riwayat.css — halaman Riwayat. Ukuran/warna/font diukur dari screenshot referensi (lebar 360dp).
+   Font: Inter (400/500/600/700) dan Lora Bold, lisensi SIL OFL, berkas di assets/fonts/. */
+@font-face{font-family:'RwInter';font-weight:400;font-style:normal;font-display:swap;src:url(../assets/fonts/inter-400.woff) format('woff')}
+@font-face{font-family:'RwInter';font-weight:500;font-style:normal;font-display:swap;src:url(../assets/fonts/inter-500.woff) format('woff')}
+@font-face{font-family:'RwInter';font-weight:600;font-style:normal;font-display:swap;src:url(../assets/fonts/inter-600.woff) format('woff')}
+@font-face{font-family:'RwInter';font-weight:700;font-style:normal;font-display:swap;src:url(../assets/fonts/inter-700.woff) format('woff')}
+@font-face{font-family:'RwLora';font-weight:700;font-style:normal;font-display:swap;src:url(../assets/fonts/lora-700.woff) format('woff')}
+body[data-tab="Riwayat"]{--rw-cy:#00aed6;--rw-gr:#12a312;--rw-ic:#1e525f;--rw-ln:#1f2326;--rw-chip:#16181a;--rw-arrow:#08090a}
+body.light[data-tab="Riwayat"]{--rw-ic:#d6f1f8;--rw-ln:#e4e8eb;--rw-chip:#f0f2f4;--rw-arrow:#e4e8eb}
+body.light[data-tab="Riwayat"] .ic{border-color:#bfe6f0}
+body.light[data-tab="Riwayat"] .sheet .btn{color:#fff}
+body[data-tab="Riwayat"] .top,body[data-tab="Riwayat"] .sum,body[data-tab="Riwayat"] .list,body[data-tab="Riwayat"] .sheet{font-family:'RwInter','Inter',system-ui,sans-serif;letter-spacing:0}
+body[data-tab="Riwayat"] .scroll{top:calc(185px + var(--safe-t))}
+body[data-tab="Riwayat"] .top{position:absolute;left:0;right:0;top:0;height:calc(110px + var(--safe-t));padding-top:var(--safe-t);border-bottom:2px solid var(--rw-arrow);background:var(--page);z-index:5}
+body[data-tab="Riwayat"] .tin{position:relative;height:108px}
+body[data-tab="Riwayat"] .top h1{position:absolute;left:23px;top:14px;font-size:16.5px;font-weight:700;line-height:22px}
+body[data-tab="Riwayat"] .dl{position:absolute;right:15px;top:8px;width:104.5px;height:37px;padding:0 0 0 11px;border-radius:19px;background:var(--card);display:flex;align-items:center;gap:6px;font-size:12.9px;font-weight:600}
+body[data-tab="Riwayat"] .dl svg{width:16px;height:16px}
+body[data-tab="Riwayat"] .chips{position:absolute;left:15px;top:61px;display:flex;gap:8px}
+body[data-tab="Riwayat"] .chip{height:36px;padding:0 13px 0 12px;border-radius:18px;background:#16181a;border:1px solid #1c1e20;display:flex;align-items:center;justify-content:space-between;font-size:12.7px;font-weight:700}
+body[data-tab="Riwayat"] .chip:nth-child(1){width:96px}
+body[data-tab="Riwayat"] .chip:nth-child(2){width:100px}
+body[data-tab="Riwayat"] .chip:nth-child(3){width:94px}
+body[data-tab="Riwayat"] .chip.on{border-color:var(--rw-gr)}
+body[data-tab="Riwayat"] .chip svg,body[data-tab="Riwayat"] .chev{width:11px;height:7px;stroke:#d4d7da;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+body[data-tab="Riwayat"] .sum{position:absolute;left:0;right:0;top:calc(110px + var(--safe-t));height:75px;background:var(--page);z-index:5}
+body[data-tab="Riwayat"] .sum .bars{position:absolute;left:19px;top:25px;width:14px;height:15px}
+body[data-tab="Riwayat"] .sum h2{position:absolute;left:42px;top:15px;font-size:14.5px;font-weight:700;line-height:22px}
+body[data-tab="Riwayat"] .sum p{position:absolute;left:15px;top:45px;font-size:10.9px;color:#a9aeb3;display:flex;align-items:center;gap:6px;white-space:nowrap}
+body[data-tab="Riwayat"] .sum p b{font-weight:400;color:var(--rw-gr)}
+body[data-tab="Riwayat"] .sum p s{width:1px;height:16px;background:#4a4f54;margin:0 2px}
+body[data-tab="Riwayat"] .go{position:absolute;right:15px;top:24px;width:38px;height:30px;border-radius:15px;background:#08090a;display:grid;place-items:center}
+body[data-tab="Riwayat"] .go svg{width:14px;height:12px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+body[data-tab="Riwayat"] .list{padding:0 15px calc(86px + var(--safe-b))}
+body[data-tab="Riwayat"] .list::-webkit-scrollbar{display:none}
+body[data-tab="Riwayat"] .grp{background:var(--card);border-radius:16px;margin-bottom:15px;position:relative}
+body[data-tab="Riwayat"] .gh{position:sticky;top:0;z-index:2;height:42px;padding:0 15px;display:flex;align-items:center;gap:8px;background:var(--card);border-radius:16px 16px 0 0;border-bottom:2px solid #141719;font-size:12.6px;font-weight:700;color:#8f959b}
+body[data-tab="Riwayat"] .gh span{font-weight:400;font-size:12.3px;color:#767c82}
+body[data-tab="Riwayat"] .row{display:flex;align-items:center;padding:9px 15px 9px 16px;min-height:63px;border-top:1px solid var(--rw-ln)}
+body[data-tab="Riwayat"] .row:first-of-type{border-top:0}
+body[data-tab="Riwayat"] .row:has(.t br){min-height:71.5px}
+body[data-tab="Riwayat"] .ic{flex:none;width:37px;height:37px;border-radius:50%;background:var(--rw-ic);border:1px solid #173f4b;display:grid;place-items:center}
+body[data-tab="Riwayat"] .ic svg{width:21px;height:21px}
+body[data-tab="Riwayat"] .t{flex:1;min-width:0;margin-left:17px;font-size:11.85px;font-weight:700;line-height:15px;white-space:nowrap}
+body[data-tab="Riwayat"] .t em{display:block;font-style:normal;font-weight:400;color:#c3c7cb;font-size:11px;line-height:19px;margin-top:3px}
+body[data-tab="Riwayat"] .r{flex:none;margin-left:8px;text-align:right}
+body[data-tab="Riwayat"] .a{font-size:12px;font-weight:700;line-height:19px;color:#d6d9e0}
+body[data-tab="Riwayat"] .a.g{color:var(--rw-gr)}
+body[data-tab="Riwayat"] .m{display:flex;align-items:center;justify-content:flex-end;gap:4.5px;font-size:10.8px;color:#c9ccd6;line-height:19px}
+body[data-tab="Riwayat"] .dot{width:15px;height:15px;border-radius:50%;background:var(--rw-cy);display:grid;place-items:center}
+body[data-tab="Riwayat"] .dot svg{width:10.5px;height:10.5px}
+body[data-tab="Riwayat"] .row.x .t,body[data-tab="Riwayat"] .row.x .a{color:#6e747a}
+body[data-tab="Riwayat"] .row.x .ic{background:#5b6064;border-color:#4a4f53}
+body[data-tab="Riwayat"] .row.x .t em{color:#ff3b47}
+body[data-tab="Riwayat"] .row.x .m{color:#6e747a}
+body[data-tab="Riwayat"] .row.x .dot{background:#6e747a}
+body[data-tab="Riwayat"] .scrim{position:absolute;inset:0;background:rgba(0,0,0,.53);opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
+body[data-tab="Riwayat"] .scrim.on{opacity:1;pointer-events:auto}
+body[data-tab="Riwayat"] .sheet{max-height:calc(100% - 20px);position:absolute;left:0;right:0;bottom:0;z-index:41;background:var(--card);border-radius:20px 20px 0 0;transform:translateY(102%);transition:transform .25s}
+body[data-tab="Riwayat"] .sheet.on{transform:none}
+body[data-tab="Riwayat"] .sheet.d{height:522px}
+body[data-tab="Riwayat"] .sheet.l{height:570px}
+body[data-tab="Riwayat"] .sheet.m2{height:611px}
+body[data-tab="Riwayat"] .hd{position:absolute;left:50%;top:15px;margin-left:-11.5px;width:23px;height:3.5px;border-radius:2px;background:#545a5e}
+body[data-tab="Riwayat"] .sh{position:absolute;left:15px;right:15px;top:0;height:92px}
+body[data-tab="Riwayat"] .sh h3{position:absolute;left:0;top:35px;font:700 22.5px/28px Georgia,"Times New Roman",serif;letter-spacing:-.2px}
+body[data-tab="Riwayat"] .sh button{position:absolute;right:0;top:34px;width:87.5px;height:33px;border-radius:17px;border:1px solid #5d6368;color:#8d9399;font-weight:700;font-size:12.9px}
+body[data-tab="Riwayat"] .sh button.on{color:#fff;border-color:#fff}
+body[data-tab="Riwayat"] .btn{position:absolute;left:15px;right:15px;bottom:calc(29.5px + var(--safe-b));height:41px;border-radius:21px;background:linear-gradient(#63c870,#069a12);font-weight:700;font-size:14.8px;color:#fff}
+body[data-tab="Riwayat"] .dr{position:absolute;left:15px;right:15px;top:75px}
+body[data-tab="Riwayat"] .opt{display:flex;align-items:center;justify-content:space-between;padding:0 4px 0 0;border-bottom:1px solid #1f2428;height:68px;width:100%;text-align:left}
+body[data-tab="Riwayat"] .opt b{display:block;font-size:14.8px;font-weight:600;line-height:20px}
+body[data-tab="Riwayat"] .opt small{display:block;font-size:11.4px;color:#c5c9cd;margin-top:0;line-height:19px}
+body[data-tab="Riwayat"] .rd{width:17px;height:17px;border-radius:50%;border:2px solid #c9ccd0;margin-right:10px;position:relative}
+body[data-tab="Riwayat"] .opt.on .rd{border-color:var(--rw-gr)}
+body[data-tab="Riwayat"] .opt.on .rd:after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--rw-gr)}
+body[data-tab="Riwayat"] .dates{display:flex;gap:8px;margin-top:0}
+body[data-tab="Riwayat"] .dates div{flex:1;height:53px;border-radius:12px;background:var(--page);padding:9px 0 0 12px;border:1px solid #1f2326}
+body[data-tab="Riwayat"] .dates b{display:block;font-size:12.2px;font-weight:600;color:#d5d8db;line-height:17px}
+body[data-tab="Riwayat"] .dates span{display:block;font-size:12.4px;font-weight:400;margin-top:5px;line-height:17px}
+body[data-tab="Riwayat"] .grid{position:absolute;left:15px;right:15px;top:90px;bottom:calc(92px + var(--safe-b));padding-bottom:10px;overflow-y:auto;display:grid;grid-template-columns:repeat(4,1fr);align-content:start;row-gap:23px;scrollbar-width:none}
+body[data-tab="Riwayat"] .grid::-webkit-scrollbar{display:none}
+body[data-tab="Riwayat"] .sv{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11px;line-height:15px;color:#c9cdd1;white-space:nowrap}
+body[data-tab="Riwayat"] .sv i{width:46px;height:46px;border-radius:50%;background:#1b1f23;border:1px solid #292e32;display:grid;place-items:center}
+body[data-tab="Riwayat"] .sv i.c{background:var(--rw-ic);border-color:#1e525f}
+body[data-tab="Riwayat"] .sv.on i{border:2px solid var(--rw-gr)}
+body[data-tab="Riwayat"] .sv svg{width:32px;height:32px}
+body[data-tab="Riwayat"] .mt{position:absolute;left:15px;right:15px;top:82px}
+body[data-tab="Riwayat"] .mo{display:flex;align-items:center;height:53.5px;border-bottom:1px solid #1f2428;font-size:14.6px;font-weight:600;width:100%;text-align:left}
+body[data-tab="Riwayat"] .mo:last-child{border:0}
+body[data-tab="Riwayat"] .mo .big{width:37.5px;height:37.5px;border-radius:50%;background:var(--rw-cy);display:grid;place-items:center;margin-right:19px}
+body[data-tab="Riwayat"] .mo .big svg{width:22px;height:22px}
+body[data-tab="Riwayat"] .mo .cb{margin-left:auto;width:19px;height:19px;border-radius:5px;border:2px solid #545a5e;margin-right:2px;position:relative}
+body[data-tab="Riwayat"] .mo.on .cb{background:var(--rw-gr);border-color:var(--rw-gr)}
+body[data-tab="Riwayat"] .mo.on .cb:after{content:"";position:absolute;left:4px;top:0;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+body[data-tab="Riwayat"] .top h1{font-size:16.5px;font-weight:700;letter-spacing:.03px}
+body[data-tab="Riwayat"] .dl{font-size:13px;font-weight:600;letter-spacing:.07px}
+body[data-tab="Riwayat"] .chip{font-size:12.5px;font-weight:700;letter-spacing:.42px}
+body[data-tab="Riwayat"] .sum h2{font-size:15px;font-weight:600;letter-spacing:-.17px}
+body[data-tab="Riwayat"] .sum p{font-size:11px;letter-spacing:-.03px}
+body[data-tab="Riwayat"] .gh{font-size:12px;font-weight:700;letter-spacing:.29px}
+body[data-tab="Riwayat"] .gh span{font-size:12px;font-weight:400;letter-spacing:.25px}
+body[data-tab="Riwayat"] .t{font-size:12px;font-weight:600;letter-spacing:.02px}
+body[data-tab="Riwayat"] .t em{font-size:11.1px;font-weight:400;letter-spacing:0}
+body[data-tab="Riwayat"] .a{font-size:11.5px;font-weight:600;letter-spacing:.5px}
+body[data-tab="Riwayat"] .m{font-size:10.8px;font-weight:400;letter-spacing:.05px}
+body[data-tab="Riwayat"] .sh h3{font-family:'RwLora',Lora,Georgia,serif;font-weight:700;font-size:20.6px;letter-spacing:0}
+body[data-tab="Riwayat"] .sh button{font-size:13px;font-weight:700;letter-spacing:0}
+body[data-tab="Riwayat"] .btn{font-size:14.8px;font-weight:700;letter-spacing:0}
+body[data-tab="Riwayat"] .opt b{font-size:14px;font-weight:700;letter-spacing:.32px}
+body[data-tab="Riwayat"] .opt small{font-size:10.25px;font-weight:500;letter-spacing:.57px}
+body[data-tab="Riwayat"] .dates b{font-size:11px;font-weight:600;letter-spacing:.3px}
+body[data-tab="Riwayat"] .dates span{font-size:11px;font-weight:500;letter-spacing:.67px}
+body[data-tab="Riwayat"] .sv{font-size:11px;font-weight:400;letter-spacing:0}
+body[data-tab="Riwayat"] .mo{font-size:14.6px;font-weight:600;letter-spacing:0}
+
+/* keadaan daftar: memuat / kosong / gagal */
+body[data-tab="Riwayat"] .empty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:90px 32px 0;text-align:center;font-size:11.5px;line-height:17px;color:#9aa3aa}
+body[data-tab="Riwayat"] .empty b{font-size:13px;font-weight:700;color:var(--txt)}
+body[data-tab="Riwayat"] .empty.err b{color:#ff3b47}
+body[data-tab="Riwayat"] .spin{width:22px;height:22px;border-radius:50%;border:2.5px solid #2d3237;border-top-color:var(--rw-cy);animation:rwspin .8s linear infinite;margin-bottom:8px}
+@keyframes rwspin{to{transform:rotate(360deg)}}

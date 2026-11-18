@@ -1,0 +1,28 @@
+/* ---------- tab Profil ---------- */
+#scrollP{background:#131517}
+.pf{position:relative;height:1601px;color:#fff;font-size:12.5px;line-height:1}
+.pf .s,.pf img,.pf .tx,.pf .sv,.pf .hit{position:absolute}
+.pf img{display:block}.pf .rr{border-radius:8px}
+.pf .tx{white-space:nowrap;line-height:1;letter-spacing:-.02em}
+.pf .fl{font-size:11.16px}
+.pf .hit{background:transparent;border-radius:20px}.pf .hit:active{background:rgba(255,255,255,.07)}
+.ptitle{position:absolute;left:0;right:0;top:0;height:calc(52.5px + var(--safe-t));background:#131517;z-index:6}
+.ptitle.sh{box-shadow:0 1px 0 rgba(0,0,0,.45),0 4px 8px rgba(0,0,0,.25)}
+.ptitle span{position:absolute;left:19px;top:calc(25px + var(--safe-t));transform:translateY(calc(-50% + 1px));font-size:17.43px;font-weight:700;color:#f6f7f9;white-space:nowrap;line-height:1;letter-spacing:-.02em}
+
+
+/* ===== Popup konfirmasi keluar (bottom sheet, dari referensi 360dp) ===== */
+#lo{position:absolute;inset:0;z-index:200;visibility:hidden;transition:visibility 0s .26s}
+#lo.lo-on{visibility:visible;transition-delay:0s}
+#lo .lo-scrim{position:absolute;inset:0;background:rgba(255,255,255,.45);opacity:0;transition:opacity .22s}
+#lo.lo-on .lo-scrim{opacity:1}
+#lo .lo-sheet{position:absolute;left:0;right:0;bottom:0;background:#131517;border-radius:22px 22px 0 0;box-shadow:inset 0 1px 0 #25292d;padding:16px 15px max(37px,calc(var(--safe-b,0px) + 16px));transform:translateY(100%);transition:transform .26s cubic-bezier(.2,.8,.2,1);font-family:"Plus Jakarta Sans","Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff}
+#lo.lo-on .lo-sheet{transform:none}
+#lo h2{font-family:"Young Serif","DM Serif Display",Georgia,"Times New Roman",serif;font-weight:400;font-size:22px;line-height:28px;letter-spacing:-.005em;color:#f6f7f9}
+#lo p{margin-top:4px;font-size:14px;line-height:20px;font-weight:500;color:#c3c8cf;letter-spacing:-.01em}
+#lo .lo-btns{display:flex;gap:15px;margin-top:30px}
+#lo .lo-btns button{flex:1;height:41px;border-radius:21px;font-size:14.5px;font-weight:700;letter-spacing:-.01em;display:grid;place-items:center}
+#lo .lo-no{border:1.2px solid #0a8a16;background:linear-gradient(180deg,#0f1211,#1b1d1f);color:#0ea01d}
+#lo .lo-yes{border:0;background:linear-gradient(180deg,#63ca6d,#05a01a);color:#fff}
+#lo .lo-btns button:active{filter:brightness(1.12)}
+
