@@ -18,13 +18,98 @@
 <meta name="apple-mobile-web-app-title" content="GoPay">
 <link rel="stylesheet" href="css/shared.css">
 <link rel="stylesheet" href="css/install.css">
-<style>.ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:0 32px calc(61px + var(--safe-b));text-align:center}.ph h1{font-size:17.4px;font-weight:700}.ph p{font-size:12.5px;line-height:18px;color:var(--muted)}</style>
+<link rel="stylesheet" href="css/keuangan.css">
 </head>
 <body data-tab="Keuangan">
 <script>try{if(localStorage.getItem('gp_theme')==='light')document.body.classList.add('light')}catch(e){}</script>
-<div class="app" id="app"><div id="ui">
-<!-- Ganti blok .ph ini dengan isi halaman Keuangan. Pertahankan <nav>, css/shared.css dan js/core.js. -->
-<div class="scroll" id="scroll"><div class="ph"><h1>Keuangan</h1><p>Halaman Keuangan belum direkonstruksi di berkas ini.</p></div></div>
+<div class="app" id="app"><div id="ui"><script>/* skala 360dp diterapkan sebelum paint pertama agar nav tidak melompat saat core.js selesai dimuat */(function(){try{var a=document.getElementById('app'),u=document.getElementById('ui');if(!a||!u)return;document.documentElement.style.setProperty('--app-h',Math.round(window.innerHeight)+'px');var w=a.clientWidth,h=a.clientHeight;if(!w||!h)return;var k=w/360;if('zoom' in document.documentElement.style){u.style.zoom=k}else{u.style.transformOrigin='0 0';u.style.transform='scale('+k+')'}u.style.setProperty('--k',k);u.style.height=(h/k)+'px'}catch(e){}})();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="k-ar" viewBox="0 0 24 24"><path d="M3 12h17M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="k-pl" viewBox="0 0 12 12"><path d="M6 1.500v9M1.500 6h9" stroke="currentColor" stroke-width="2.600" stroke-linecap="round"/></symbol>
+<symbol id="k-nw" viewBox="0 0 12 12"><path d="M3 9l6-6M4 3h5v5" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="k-wl" viewBox="0 0 24 24"><path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v1H4zM3 9.500h18v7.500a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z" fill="currentColor"/><circle cx="16.500" cy="14.500" r="1.500" fill="#00aed6"/></symbol>
+<symbol id="k-cn" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500" fill="none" stroke="currentColor" stroke-width="3.200"/><circle cx="13" cy="13" r="3" fill="currentColor"/></symbol>
+<symbol id="k-lt" viewBox="0 0 24 24"><path d="M4 8c0-3 3-5 7-3 5 2 8 6 8 9 0 3-3 5-6 4-4-1-9-6-9-10z" fill="currentColor"/><circle cx="12" cy="12" r="2.400" fill="#00aed6"/></symbol>
+<symbol id="k-sh" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.500 9-8 11C7.500 20 4 16 4 11V5z" fill="currentColor"/><path d="M8 12l3 3 5-6" fill="none" stroke="#00aed6" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="k-gd" viewBox="0 0 24 24"><path d="M8 7h8l3 5H5zM3 13h8l1 5H2zM13 13h8l1 5H12z" fill="currentColor"/></symbol>
+<symbol id="k-ch" viewBox="0 0 24 24"><path d="M3 20h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 15l5-5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 6h4v4" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18v-1M9 18v-3M13 18v-2M17 18v-4" stroke="currentColor" stroke-width="2.400" stroke-linecap="round"/></symbol>
+<symbol id="k-bp" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2.500" fill="currentColor"/><path d="M12 8l3 1.200v2.600c0 1.800-1.300 3-3 3.700-1.700-.7-3-1.900-3-3.700V9.200z" fill="#00aed6"/><path d="M2 12h4M18 12h4" stroke="#00aed6" stroke-width="1.600"/></symbol>
+<symbol id="k-mc" viewBox="0 0 24 24"><path d="M4 7a3 3 0 0 1 3-3h10l-2 3H7a1 1 0 0 0 0 2h11a2 2 0 0 1 2 2v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z" fill="currentColor"/><circle cx="13" cy="14" r="3" fill="#00aed6"/><circle cx="13" cy="14" r="1.200" fill="#fff"/></symbol>
+<symbol id="k-bk" viewBox="0 0 24 24"><path d="M12 2.500 2 8v1.500h20V8z" fill="currentColor"/><circle cx="12" cy="6.300" r="1" fill="#25292e"/><path d="M4 11h3v6H4zM10.500 11h3v6h-3zM17 11h3v6h-3zM2 19h20v2.500H2z" fill="currentColor"/></symbol>
+<symbol id="k-tr" viewBox="0 0 24 24"><path d="M7 3h10v5a5 5 0 0 1-10 0zM7 5H3v2a4 4 0 0 0 4 4M17 5h4v2a4 4 0 0 1-4 4M10 14h4v3h2v3H8v-3h2z" fill="#0f7d1d" stroke="#0f7d1d" stroke-width="1" stroke-linejoin="round"/><path d="M12 5l1 2 2 .2-1.500 1.400.4 2L12 9.600 10.100 10.600l.4-2L9 7.200 11 7z" fill="#0c2410"/></symbol>
+<symbol id="k-sm" viewBox="0 0 360 27" preserveAspectRatio="none"><path d="M0 0H360V6C330 3 290 3 250 14S185 27 135 21 50 5 0 5Z" style="fill:var(--kg-seam)"/><path d="M0 5C50 5 95 14 135 21S205 27 250 14 330 3 360 6" fill="none" style="stroke:var(--kg-stitch)" stroke-width="1" stroke-dasharray="6 4"/></symbol>
+</defs>
+</svg>
+
+<header class="top"><h1>Keuangan</h1></header>
+<div class="scroll" id="scroll"><main class="kg">
+
+ <button class="promo" data-t="Emas lagi jadi incaran">
+  <svg class="gi" viewBox="0 0 24 24"><path d="M8 3h8l2.500 4.500h-13z" fill="#f6c21a"/><path d="M5.500 7.500h13L19.500 11H4.500z" fill="#e0a812"/><path d="M2 15.500c3-1 6-2 8-.5l5 .3c1 0 1 1.500 0 1.700L9 18M4 20.500l8 1 7-3.500c1-.5 2-1.800 1-2.500-.5-.4-1.500-.2-2 .2" fill="none" stroke="#e85a4f" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span class="pt"><b>Emas lagi jadi incaran</b><small>Harganya relatif stabil</small></span>
+  <span class="go"><svg><use href="#k-ar"/></svg></span>
+ </button>
+
+ <div class="sh"><h2>Sumber dana</h2><button class="add" data-t="Tambah sumber dana">Tambah <i></i></button></div>
+ <section class="stack">
+  <button class="kc" style="--h:153px;padding-top:16px" data-t="GoPay Saldo">
+   <div class="kr t"><span class="ki"><svg><use href="#k-wl"/></svg></span>
+    <div class="kx"><b>GoPay Saldo</b><div class="ut">Utama <svg><use href="#k-nw"/></svg></div></div><span class="amt">Rp109.882</span></div>
+   <div class="pill" role="button" data-t="Proteksi penipuan digital" style="margin-top:19px"><svg class="pi"><use href="#k-sh" style="color:#0f7d1d"/></svg><span>Proteksi penipuan digital, mulai dari 1rb</span><svg class="pa"><use href="#k-ar"/></svg></div>
+  </button>
+  <button class="kc" style="--h:82px;padding-top:15px" data-t="Coins">
+   <div class="kr"><span class="ki"><svg><use href="#k-cn"/></svg></span><div class="kx"><b>Coins</b></div><span class="cnt">41</span></div>
+  </button>
+  <button class="kc" style="--h:61px;padding-top:18px" data-t="GoPay Later">
+   <div class="kr"><span class="ki"><svg><use href="#k-lt"/></svg></span><div class="kx"><b>GoPay Later</b><small>Beli sekarang, bayar akhir bulan</small></div><span class="pl2"><svg><use href="#k-pl"/></svg></span></div>
+  </button>
+ </section>
+ <svg class="seam"><use href="#k-sm"/></svg>
+
+ <div class="sh p"><h2>Simpanan &amp; asuransi</h2></div>
+ <section class="stack">
+  <button class="kc" style="--h:91px;padding-top:17px" data-t="Asuransi">
+   <div class="kr"><span class="ki"><svg><use href="#k-sh"/></svg></span><div class="kx"><b>Asuransi</b><small>Mulai Rp1.000 + Diskon 25% Hari Ini!</small></div><span class="pl2"><svg><use href="#k-pl"/></svg></span></div>
+  </button>
+  <button class="kc" style="--h:159px;padding-top:11px" data-t="Emas">
+   <div class="kr"><span class="ki"><svg><use href="#k-gd"/></svg></span><div class="kx"><b>Emas</b><small>Kembangkan asetmu dengan emas mulai dari Rp1.000</small></div><span class="pl2"><svg><use href="#k-pl"/></svg></span></div>
+   <div class="pill" role="button" data-t="Menang 1jt koin tiap hari" style="margin-top:15px"><svg class="pi"><use href="#k-tr"/></svg><span>Menang 1jt koin tiap hari</span><svg class="pa"><use href="#k-ar"/></svg></div>
+  </button>
+  <button class="kc" style="--h:63px;padding-top:15px" data-t="Investasi">
+   <div class="kr"><span class="ki"><svg><use href="#k-ch"/></svg></span><div class="kx"><b>Investasi</b><small>Cara aman buat bikin uangmu kerja buat kamu</small></div><span class="pl2"><svg><use href="#k-pl"/></svg></span></div>
+  </button>
+ </section>
+ <svg class="seam"><use href="#k-sm"/></svg>
+
+ <div class="sh p"><h2>Pinjaman</h2></div>
+ <section class="stack">
+  <button class="kc" style="--h:82px;padding-top:15px" data-t="Pinjaman">
+   <div class="kr"><span class="ki rp">Rp</span><div class="kx"><b>Pinjaman</b></div></div>
+  </button>
+  <button class="kc" style="--h:62px;padding-top:17px" data-t="Pinjam BPKB">
+   <div class="kr"><span class="ki"><svg><use href="#k-bp"/></svg></span><div class="kx"><b>Pinjam BPKB</b><small>Pembiayaan tunai dengan jaminan BPKB</small></div></div>
+  </button>
+ </section>
+ <svg class="seam"><use href="#k-sm"/></svg>
+
+ <div class="sh p"><h2>Pilihan lainnya</h2></div>
+ <section class="stack">
+  <button class="kc" style="--h:53px;padding-top:15px" data-t="QRIS GoPay Merchant">
+   <div class="kr"><span class="ki"><svg><use href="#k-mc"/></svg></span><div class="kx"><b>QRIS GoPay Merchant</b></div><span class="pl2"><svg><use href="#k-pl"/></svg></span></div>
+  </button>
+ </section>
+ <svg class="seam"><use href="#k-sm"/></svg>
+
+ <div class="sh" style="margin-top:14px"><h2>Akun penerima</h2><button class="add" data-t="Tambah akun penerima">Tambah <i></i></button></div>
+ <section class="stack">
+  <button class="kc" style="--h:77px;padding-top:11px" data-t="Tambah akun bank &amp; e-wallet">
+   <div class="kr"><span class="ki bk"><svg><use href="#k-bk"/></svg></span><div class="kx"><b>Tambah akun bank &amp; e-wallet</b><small>Nanti orang lain bisa langsung transfer uang ke akun yang kamu tambah.</small></div><span class="pl2"><svg><use href="#k-pl"/></svg></span></div>
+  </button>
+ </section>
+ <svg class="seam"><use href="#k-sm"/></svg>
+
+</main></div>
 <nav class="nav">
   <a class="ni" style="left:0" data-tab="Beranda" href="index.html"><i class="pl"></i><i class="mi"></i><span class="lb">Beranda</span></a>
   <a class="ni on" style="left:72px" data-tab="Keuangan" href="keuangan.html" aria-current="page"><i class="pl"></i><i class="mi"></i><span class="lb">Keuangan</span></a>
@@ -37,8 +122,12 @@
 <div class="toast" id="toast"></div>
 </div></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
 <script src="js/core.js"></script>
+<script src="js/notif.js"></script>
 <script src="js/install.js"></script>
+<script src="push.js"></script>
 <script src="update.js"></script>
 </body>
 </html>

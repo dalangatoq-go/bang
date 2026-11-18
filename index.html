@@ -22,26 +22,29 @@
 </head>
 <body data-tab="Beranda">
 <script>try{if(localStorage.getItem('gp_theme')==='light')document.body.classList.add('light')}catch(e){}</script>
-<div class="app" id="app"><div id="ui">
+<div class="app" id="app"><div id="ui"><script>/* skala 360dp diterapkan sebelum paint pertama agar nav tidak melompat saat core.js selesai dimuat */(function(){try{var a=document.getElementById('app'),u=document.getElementById('ui');if(!a||!u)return;document.documentElement.style.setProperty('--app-h',Math.round(window.innerHeight)+'px');var w=a.clientWidth,h=a.clientHeight;if(!w||!h)return;var k=w/360;if('zoom' in document.documentElement.style){u.style.zoom=k}else{u.style.transformOrigin='0 0';u.style.transform='scale('+k+')'}u.style.setProperty('--k',k);u.style.height=(h/k)+'px'}catch(e){}})();</script>
 <div id="ptrbg" aria-hidden="true"></div>
 <div class="scroll" id="scroll"><div class="content">
 
 <section class="hdr"><div class="stage" id="stage">
-  <button class="pill" data-t="Maksimalkan perlindunganmu"><svg width="8.5" height="9.5" viewBox="0 0 12 12"><path d="M6 .5 1.6 2.2v3.3c0 2.7 1.8 4.7 4.4 6 2.6-1.3 4.4-3.3 4.4-6V2.2L6 .5Z" fill="#fff"/><path d="M4 6l1.4 1.4L8 4.6" fill="none" stroke="#0e537b" stroke-width="1.2"/></svg><span>Maksimalkan perlindunganmu</span></button>
-  <button class="help" data-t="Pusat bantuan" aria-label="Bantuan"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="8" cy="8" r="6.8"/><path d="M6 6.2c0-1.1.9-1.9 2-1.9s2 .8 2 1.8c0 1.5-2 1.5-2 3" stroke-linecap="round"/><circle cx="8" cy="11.5" r=".5" fill="#fff"/></svg></button>
+  <div class="logo" aria-label="GoPay"><svg viewBox="0 0 13 12" fill="none"><rect x="0" y="1" width="13" height="10.5" rx="3" fill="#5ec8f2"/><rect x="8" y="4.6" width="5" height="3.4" rx="1.4" fill="#025c90"/><circle cx="10" cy="6.3" r=".8" fill="#5ec8f2"/></svg><span>gopay</span></div>
+  <button class="pill" data-t="Maksimalkan perlindunganmu"><span class="pct">75%</span><span class="tx">Segera lindungi akun!</span><svg class="chv" viewBox="0 0 8 12" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5 6.5 6 1.5 10.5"/></svg></button>
+  <button class="help glass" data-t="Pusat bantuan" aria-label="Bantuan"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="8" cy="8" r="6.8"/><path d="M6 6.2c0-1.1.9-1.9 2-1.9s2 .8 2 1.8c0 1.5-2 1.5-2 3" stroke-linecap="round"/><circle cx="8" cy="11.5" r=".5" fill="#fff"/></svg></button>
 
   <div class="bal"><span class="rp">Rp</span><span class="amt" id="amt">—</span>
     <button class="eyeb" id="eye" aria-label="Tampilkan atau sembunyikan saldo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12Z"/><circle id="pupil" cx="12" cy="12" r="3.2" fill="#fff" stroke="none"/></svg></button></div>
-  <div class="coins"><b>70</b> Coins</div>
+  <div class="coins"><b>41</b> Coins</div>
 
-  <button class="spent" data-t="Rincian pengeluaran bulan ini"><svg class="bars" viewBox="0 0 12 12" preserveAspectRatio="none" fill="#fff"><rect x="0" y="5" width="3" height="7"/><rect x="4.5" y="1" width="3" height="11"/><rect x="9" y="4" width="3" height="8"/></svg><span><b>Rp3.760.698</b> udah terpakai di Nove…</span><svg class="chv" viewBox="0 0 8 12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5 6.5 6 1.5 10.5"/></svg></button>
+  <button class="spent" data-t="Rincian pengeluaran bulan ini"><svg class="bars" viewBox="0 0 12 12" preserveAspectRatio="none" fill="#fff"><rect x="0" y="5" width="1.8" height="7" rx=".9"/><rect x="5.1" y="0" width="1.8" height="12" rx=".9"/><rect x="10.2" y="3.5" width="1.8" height="8.5" rx=".9"/></svg><span><b>Rp14.472.724</b> udah terpakai di Nove…</span><svg class="chv" viewBox="0 0 8 12" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5 6.5 6 1.5 10.5"/></svg></button>
 
-  <button class="stack tu" data-page="topup.html" aria-label="Top up"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><circle cx="7" cy="7" r="6.2"/><path d="M7 4v6M4 7h6"/></svg><span>Top up</span></button>
-  <button class="stack tt" data-t="Tarik tunai memerlukan layanan GoPay"><svg width="12" height="13" viewBox="0 0 12 14" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 1v11M1.8 8 6 12.2 10.2 8"/></svg><span>Tarik Tunai</span></button>
+  <button class="stack tu glass" data-page="topup.html" aria-label="Top up"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><circle cx="7" cy="7" r="6.2"/><path d="M7 4v6M4 7h6"/></svg><span class="tx">Top up</span></button>
+  <button class="stack tt glass" data-t="Tarik tunai memerlukan layanan GoPay"><svg width="12" height="13" viewBox="0 0 12 14" preserveAspectRatio="none" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 1v11M1.8 8 6 12.2 10.2 8"/></svg><span class="tx">Tarik Tunai</span></button>
 
-  <button class="chip c1" data-t="Aktifin Pinjam"><span>Aktifin Pinjam</span><svg viewBox="0 0 8 12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5 6.5 6 1.5 10.5"/></svg></button>
-  <button class="chip c2" data-t="Aktifin GoPay Later"><span>Aktifin GoPay Later</span><svg viewBox="0 0 8 12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5 6.5 6 1.5 10.5"/></svg></button>
-  <button class="chip c3" data-t="Bukalapak"><span>Bukalapak</span></button>
+  <div class="chips">
+    <button class="chip glass" data-t="Pinjam BPKB 90% cair"><svg class="ic" viewBox="0 0 13 9" fill="none"><rect width="13" height="9" rx="1.6" fill="#03a5c7"/><rect x="0" y="2.6" width="13" height="1.2" fill="#0a4f6e"/><rect x="0" y="5.2" width="13" height="1.2" fill="#0a4f6e"/><rect x="4.2" y="2.2" width="4.6" height="4.6" rx="1.6" fill="#03a5c7" stroke="#0a4f6e" stroke-width=".9"/></svg><span class="tx">Pinjam BPKB 90% cair</span><svg class="chv" viewBox="0 0 8 12" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5 6.5 6 1.5 10.5"/></svg></button>
+    <button class="chip glass" data-t="Asuransi mulai 1rb"><svg class="ic2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#14b3dc"/><path d="M8 3.2 4.6 4.5v2.6c0 2.1 1.4 3.7 3.4 4.7 2-1 3.4-2.6 3.4-4.7V4.5L8 3.2Z" fill="#fff"/><path d="M6.4 7.7l1.2 1.2 2.1-2.3" fill="none" stroke="#14b3dc" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="tx">Asuransi mulai 1rb</span><svg class="chv" viewBox="0 0 8 12" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5 6.5 6 1.5 10.5"/></svg></button>
+    <button class="chip glass" data-t="Bukalapak"><svg class="ic" viewBox="0 0 13 9" fill="none"><rect width="13" height="9" rx="1.6" fill="#03a5c7"/></svg><span class="tx">Bukalapak</span></button>
+  </div>
 </div></section>
 
 <div class="sheet">
@@ -111,6 +114,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="js/config.js"></script>
 <script src="js/core.js"></script>
+<script src="js/notif.js"></script>
 <script src="js/beranda.js"></script>
 <script src="js/install.js"></script>
 <script src="push.js"></script>

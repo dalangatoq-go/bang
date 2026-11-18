@@ -22,8 +22,8 @@
 </head>
 <body data-tab="Profil">
 <script>try{if(localStorage.getItem('gp_theme')==='light')document.body.classList.add('light')}catch(e){}</script>
-<div class="app" id="app"><div id="ui">
-<div class="scroll" id="scrollP"><div style="padding-top:var(--safe-t)"><div class="pf" id="pf">
+<div class="app" id="app"><div id="ui"><script>/* skala 360dp diterapkan sebelum paint pertama agar nav tidak melompat saat core.js selesai dimuat */(function(){try{var a=document.getElementById('app'),u=document.getElementById('ui');if(!a||!u)return;document.documentElement.style.setProperty('--app-h',Math.round(window.innerHeight)+'px');var w=a.clientWidth,h=a.clientHeight;if(!w||!h)return;var k=w/360;if('zoom' in document.documentElement.style){u.style.zoom=k}else{u.style.transformOrigin='0 0';u.style.transform='scale('+k+')'}u.style.setProperty('--k',k);u.style.height=(h/k)+'px'}catch(e){}})();</script>
+<div class="scroll" id="scrollP"><div style="padding-top:var(--safe-t);padding-bottom:var(--safe-b)"><div class="pf" id="pf">
 <div class="s" style="left:15.0px;top:150.0px;width:330.0px;height:59.0px;background:#0181a0;border-radius:0 0 17.5px 17.5px"></div>
 <div class="s" style="left:15.0px;top:67.5px;width:330.0px;height:105.0px;background:#2a2e32;border-radius:17.5px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)"></div>
 <div class="s" style="left:15.0px;top:425.0px;width:330.0px;height:62.5px;background:#08090a;border-radius:0 0 17.5px 17.5px"></div>
@@ -156,6 +156,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="js/config.js"></script>
 <script src="js/core.js"></script>
+<script src="js/notif.js"></script>
 <script src="js/profil.js"></script>
 <script src="js/install.js"></script>
 <script src="push.js"></script>
