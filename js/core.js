@@ -1,4 +1,5 @@
-/* core.js — dipakai semua halaman: skala 360dp, toast, tema, navigasi tab, tombol back, pull-to-refresh */
+/* core.js — dipakai semua halaman: skala 360dp, toast, tema, navigasi tab, tombol back (termasuk sheet/popup), pull-to-refresh,
+   banner offline, keyboard layar, getaran halus, simpan posisi scroll per tab */
 (function(){
   'use strict';
   var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
@@ -7,7 +8,16 @@
   var app=$('#app'),ui=$('#ui'),toastEl=$('#toast'),tt;
   var TAB=document.body.getAttribute('data-tab')||'';
 
+  // ---- umpan balik sentuh (Android/Chrome; iOS Safari tidak mendukung vibrate, diabaikan diam-diam)
+  var reduce=safe(function(){return matchMedia('(prefers-reduced-motion: reduce)').matches});
+  GP.haptic=function(kind){
+    if(reduce||!navigator.vibrate) return;
+    if(navigator.userActivation&&!navigator.userActivation.hasBeenActive) return;   // Chrome menolak getar sebelum ada sentuhan
+    if(safe(function(){return localStorage.getItem('gp_haptic')})==='off') return;
+    safe(function(){navigator.vibrate(kind==='ok'?[10,40,10]:kind==='err'?[30,40,30]:kind==='tap'?8:12)});
+  };
   GP.say=function(m){
+    GP.haptic('tap');
     if(!toastEl) return;
     toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(tt);
     tt=setTimeout(function(){toastEl.classList.remove('show')},2200);
@@ -27,16 +37,40 @@
     if(history.length>1&&same!==false) history.back(); else location.replace(fallback);
   };
 
-  // ---- Tanpa zoom (semua halaman): pinch, double-tap, Ctrl+scroll, Ctrl +/-/0
-  ['gesturestart','gesturechange','gestureend'].forEach(function(ev){          // pinch di Safari iOS
+  // ---- Zoom halaman dikunci (keputusan produk): lapisan 1 viewport meta, lapisan 2 CSS touch-action:pan-x pan-y,
+  // lapisan 3 skrip di bawah (pinch Safari iOS, pinch dua jari, double-tap, Ctrl+scroll, Ctrl +/-/0).
+  ['gesturestart','gesturechange','gestureend'].forEach(function(ev){
     document.addEventListener(ev,function(e){e.preventDefault()},{passive:false});
   });
-  document.addEventListener('touchmove',function(e){                           // pinch dua jari
+  document.addEventListener('touchmove',function(e){
     if(e.touches.length>1&&e.cancelable) e.preventDefault();
   },{passive:false});
-  addEventListener('wheel',function(e){ if(e.ctrlKey&&e.cancelable) e.preventDefault(); },{passive:false}); // Ctrl+scroll / pinch trackpad
+  var lastTap=0;
+  document.addEventListener('touchend',function(e){
+    var n=Date.now(); if(n-lastTap<300&&e.cancelable) e.preventDefault(); lastTap=n;   // double-tap zoom
+  },{passive:false});
+  addEventListener('wheel',function(e){ if(e.ctrlKey&&e.cancelable) e.preventDefault(); },{passive:false});
   addEventListener('keydown',function(e){
     if((e.ctrlKey||e.metaKey)&&['+','=','-','_','0'].indexOf(e.key)>=0) e.preventDefault();
+  });
+  // Auto-zoom iOS saat fokus input berfont < 16px dicegah oleh maximum-scale=1 pada viewport meta.
+
+  // ---- Layer (bottom sheet / popup): tombol Back perangkat menutup layer, bukan keluar halaman.
+  // GP.layer.push(fnTutup) saat layer dibuka; GP.layer.pop() saat layer ditutup lewat UI (scrim/tombol).
+  var layers=[];
+  GP.layer={
+    push:function(close){ layers.push(close); safe(function(){history.pushState({gpLayer:layers.length},'')}); },
+    pop:function(){                       // ditutup lewat UI: buang entri riwayat milik layer itu
+      if(!layers.length) return;
+      layers.pop();
+      safe(function(){ if(history.state&&history.state.gpLayer) history.back(); });
+    },
+    any:function(){return layers.length>0}
+  };
+  addEventListener('popstate',function(){
+    // Back ditekan saat ada layer: tutup layer paling atas (tanpa memanggil pop lagi)
+    var n=(history.state&&history.state.gpLayer)||0;
+    while(layers.length>n){ var f=layers.pop(); safe(f); }
   });
 
   // ---- klik: pindah halaman (data-page) & item yang belum punya backend (data-t)
@@ -197,4 +231,89 @@
     var s1=$('#scroll');
     if(s1&&TAB==='Beranda') attach(s1,0,true,{hold:2000});
   }
+
+  // ---- Tampilan siap: transisi halus saat halaman muncul (untuk browser tanpa View Transitions)
+  requestAnimationFrame(function(){ document.documentElement.classList.add('gp-ready'); });
+
+  // ---- Banner offline: "Tidak ada koneksi" + kabar saat tersambung lagi
+  var offEl=document.createElement('div');
+  offEl.className='gp-off';offEl.setAttribute('role','status');offEl.setAttribute('aria-live','polite');
+  if(app) app.appendChild(offEl);
+  var offT;
+  function netState(){
+    clearTimeout(offT);
+    if(navigator.onLine===false){
+      offEl.textContent='Tidak ada koneksi \u2014 menampilkan data terakhir';
+      offEl.classList.remove('ok');offEl.classList.add('show');
+      window.dispatchEvent(new CustomEvent('gp:offline'));
+    } else if(offEl.classList.contains('show')){
+      offEl.textContent='Tersambung kembali';offEl.classList.add('ok');
+      offT=setTimeout(function(){offEl.classList.remove('show')},1800);
+      window.dispatchEvent(new CustomEvent('gp:online'));
+    }
+  }
+  addEventListener('online',netState);addEventListener('offline',netState);
+  GP.online=function(){return navigator.onLine!==false};
+  if(navigator.onLine===false) netState();
+
+  // ---- Keyboard layar: sembunyikan nav, gulirkan kolom isian ke area terlihat, pulihkan posisi saat keyboard tutup
+  var vv=window.visualViewport,baseH=window.innerHeight,kbOn=false;
+  function isField(el){return !!el&&/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)&&!/^(button|checkbox|radio|submit|range)$/.test(el.type||'')||(!!el&&el.isContentEditable)}
+  function vh(){return vv?vv.height:window.innerHeight}
+  function kbCheck(){
+    var f=isField(document.activeElement);
+    if(!f) baseH=Math.max(baseH,window.innerHeight);
+    var open=f&&(baseH-vh()>120);
+    if(open!==kbOn){
+      kbOn=open;document.documentElement.classList.toggle('gp-kb',open);
+      if(!open){ safe(function(){app.scrollTop=0;document.documentElement.scrollTop=0;window.scrollTo(0,0)}); }
+    }
+  }
+  function scroller(el){
+    for(var p=el.parentElement;p&&p!==document.body;p=p.parentElement){
+      var o=getComputedStyle(p).overflowY;
+      if((o==='auto'||o==='scroll')&&p.scrollHeight>p.clientHeight+2) return p;
+    }
+    return null;
+  }
+  function reveal(el){
+    var sc=scroller(el); if(!sc) return;
+    var r=el.getBoundingClientRect(),cr=sc.getBoundingClientRect(),k=GP.k();
+    var bottom=Math.min(cr.bottom,vv?vv.offsetTop+vv.height:cr.bottom)-16;
+    if(r.bottom>bottom||r.top<cr.top+8){
+      sc.scrollTo({top:sc.scrollTop+((r.top-cr.top)-(bottom-cr.top)/3)/k,behavior:'smooth'});
+    }
+  }
+  document.addEventListener('focusin',function(e){
+    if(!isField(e.target)) return;
+    var t=e.target;setTimeout(function(){kbCheck();reveal(t)},320);
+  });
+  document.addEventListener('focusout',function(){ setTimeout(kbCheck,120); });
+  if(vv) vv.addEventListener('resize',kbCheck,{passive:true});
+  addEventListener('resize',kbCheck,{passive:true});
+
+  // ---- Simpan & pulihkan posisi scroll tiap tab (seperti tab aplikasi native yang mempertahankan posisinya)
+  (function(){
+    if(!TAB) return;
+    var sc=$('.scroll'); if(!sc) return;
+    var key='gp_sy_'+TAB;
+    function save(){ safe(function(){sessionStorage.setItem(key,String(Math.round(sc.scrollTop)))}); }
+    function restore(){
+      var y=+safe(function(){return sessionStorage.getItem(key)})||0; if(!y) return;
+      sc.style.scrollBehavior='auto';sc.scrollTop=y;
+      requestAnimationFrame(function(){sc.scrollTop=y;sc.style.scrollBehavior=''});
+    }
+    restore();
+    addEventListener('load',function(){ if(sc.scrollTop<2) restore(); });
+    addEventListener('pagehide',save);
+    document.addEventListener('visibilitychange',function(){ if(document.hidden) save(); });
+    document.addEventListener('click',function(e){ if(e.target.closest('a.ni')) save(); },true);
+    GP.resetScroll=function(){ safe(function(){sessionStorage.removeItem(key)}); };
+  })();
+
+  // ---- Getaran halus saat menyentuh tab bawah & tombol
+  document.addEventListener('pointerdown',function(e){
+    var el=e.target.closest&&e.target.closest('.ni,button:not([data-t]),[data-page]');
+    if(el) GP.haptic('tap');
+  },{passive:true});
 })();

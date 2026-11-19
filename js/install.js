@@ -27,12 +27,13 @@
   var inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|TikTok|Snapchat|Twitter|GSA\//.test(ua); // WebView: tidak bisa "Tambah ke Layar Utama"
   function snoozed() { return Date.now() - (+get(K_SNOOZE) || 0) < SNOOZE_MS; }
 
-  var deferred = null, shown = false, pending = false, root = null;
+  var deferred = null, shown = false, pending = false, root = null, layerOn = false;
 
   function say(m) { if (window.GP && GP.say) GP.say(m); }
-  function hide() {
+  function hide(fromBack) {
     if (!root) return;
     var r = root; root = null;
+    if (layerOn) { layerOn = false; if (fromBack !== true && window.GP && GP.layer) GP.layer.pop(); }   // buang entri riwayat milik popup
     r.classList.remove('on'); r.setAttribute('aria-hidden', 'true');
     document.removeEventListener('keydown', onKey);
     setTimeout(function () { if (r.parentNode) r.parentNode.removeChild(r); }, 320);
@@ -70,6 +71,7 @@
     shown = true;
     root = build(mode);
     ui.appendChild(root);
+    if (window.GP && GP.layer) { layerOn = true; GP.layer.push(function () { set(K_SNOOZE, String(Date.now())); hide(true); }); }   // tombol Back = "Nanti saja"
     var q = function (id) { return root.querySelector('#' + id); };
     q('pwa-scrim').addEventListener('click', snooze);
     if (mode === 'ios') {
@@ -95,8 +97,7 @@
     }); });
   }
 
-  // Kunjungan pertama: update.js memuat ulang halaman sekali saat service worker mengambil alih.
-  // Tunggu sampai itu selesai supaya popup tidak hilang di tengah reload.
+  // Kunjungan pertama: beri waktu service worker mengambil alih sebelum popup tampil (WAIT_SW).
   function schedule() {
     if (shown || pending) return;
     pending = true;

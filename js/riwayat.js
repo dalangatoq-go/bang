@@ -167,10 +167,16 @@ S.forEach(function(s,i){
 document.getElementById("grid").innerHTML=g;
 /* sheet: baris pertama grid sudah tergulir seperti pada screenshot */
 var sc=document.getElementById("scrim"),cur=null;
-function show(k){
+function render(k){
  ["sd","sl","sm"].forEach(function(i){document.getElementById(i).classList.remove("on")});
  cur=k;sc.classList.toggle("on",!!k);
  if(k){var e=document.getElementById("s"+k);e.classList.add("on");if(k=="l")document.getElementById("grid").scrollTop=19.5}
+}
+/* tombol Back perangkat menutup sheet (bukan keluar halaman): lihat GP.layer di core.js */
+function show(k){
+ var was=cur,L=window.GP&&GP.layer;
+ if(k){ if(!was&&L) L.push(function(){render(null)}); render(k); }
+ else { render(null); if(was&&L) L.pop(); }
 }
 document.querySelectorAll(".chip").forEach(function(c){c.onclick=function(){show(c.dataset.s)}});
 sc.onclick=function(){show(null)};

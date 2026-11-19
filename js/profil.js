@@ -46,15 +46,18 @@
 
   // popup konfirmasi keluar
   var LO=$('#lo');
-  function openLo(){LO.classList.add('lo-on');LO.setAttribute('aria-hidden','false')}
-  function closeLo(){LO.classList.remove('lo-on');LO.setAttribute('aria-hidden','true')}
+  function hideLo(){LO.classList.remove('lo-on');LO.setAttribute('aria-hidden','true')}
+  function openLo(){ if(LO.classList.contains('lo-on')) return; LO.classList.add('lo-on');LO.setAttribute('aria-hidden','false'); if(GP.layer) GP.layer.push(hideLo); }
+  function closeLo(){ if(!LO.classList.contains('lo-on')) return; hideLo(); if(GP.layer) GP.layer.pop(); }
   document.addEventListener('click',function(e){ if(e.target.closest('[data-go="lo"]')) openLo(); });
   $('#lo-scrim').addEventListener('click',closeLo);
   $('#lo-no').addEventListener('click',closeLo);
   $('#lo-yes').addEventListener('click',function(){
-    closeLo(); say('Keluar memerlukan sesi akun (belum terhubung ke server)');
+    closeLo();
+    if(GP.haptic) GP.haptic('ok');
+    // alur keluar: Profil -> onboarding -> nomor HP -> PIN. replace agar tombol Back tidak kembali ke Profil.
+    setTimeout(function(){ location.replace('onboarding.html'); },160);   // beri waktu GP.layer.pop() menuntaskan history.back()
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&LO.classList.contains('lo-on'))closeLo()});
-  // tombol back perangkat saat popup terbuka: tutup popup dulu
-  addEventListener('popstate',function(){ if(LO.classList.contains('lo-on')) closeLo(); });
+  // tombol back perangkat saat popup terbuka: ditangani GP.layer (core.js) -> hideLo()
 })();
