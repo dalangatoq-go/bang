@@ -1,0 +1,80 @@
+/* ===== masuk.css — alur keluar/masuk: onboarding, nomor HP, PIN (diekstrak dari 3 screenshot, skala 360dp) ===== */
+body.mk #ui{--dy:max(calc(var(--safe-t) - 24px),0px)}
+body.mk{--bg:#07111f;--surf:#1b2736;--surf-bd:#2f3e52;--neon:#1ed760;--neon-bg:#0b3a2a;--t2:#a9b4c8}
+body.mk .app,body.mk #ui{background:var(--bg)}
+.mk .ab{position:absolute;display:grid;place-items:center;color:#fff}
+.mk .ab:active{filter:brightness(1.25)}
+.mk .abtn{width:36px;height:36px;border-radius:50%;background:var(--surf)}
+.mk .abtn .qm{width:15px;height:15px;border-radius:50%;background:#fff;color:var(--bg);font-size:11px;font-weight:800;line-height:15px;text-align:center}
+.mk .lang{height:35.6px;border-radius:18px;background:var(--surf);padding:0 12px 0 11px;display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;white-space:nowrap}
+.mk .lang svg{width:18px;height:18px;flex:none}
+.mk .txt{position:absolute;white-space:nowrap;line-height:1}
+.mk .pill-link{position:absolute;display:flex;align-items:center;background:var(--neon-bg);color:var(--neon);font-weight:700;border-radius:999px;white-space:nowrap}
+.mk .pill-link:active{filter:brightness(1.3)}
+
+/* ---------- 1. Onboarding (biru) ---------- */
+body.onb .app,body.onb #ui{background:linear-gradient(180deg,#0b6be6 0%,#0a5cd6 55%,#0847b8 100%)}
+body.onb .abtn,body.onb .lang{background:#0a55c8;box-shadow:0 2px 6px rgba(0,30,90,.28)}
+body.onb .abtn .qm{color:#0a55c8}
+.onb .abtn{left:141.2px;top:calc(var(--safe-t) + 10.7px);width:37.7px;height:37.7px}
+.onb .lang{left:193.7px;top:calc(var(--safe-t) + 10.7px);width:150px;height:36.4px;font-size:12.9px;padding:0 0 0 10px}
+.onb .mid{position:absolute;left:0;right:0;top:calc(46.5% - 205.5px);height:411px}
+.onb h1{position:absolute;left:0;right:0;top:0;text-align:center;color:#fff;font-weight:700;font-size:23.1px;line-height:30.9px;letter-spacing:-.01em}
+.onb .ill{position:absolute;left:0;top:94.9px;width:360px;height:218.6px;display:block;overflow:visible}
+.onb .sub{position:absolute;left:0;right:0;top:327.9px;text-align:center;color:#fff;font-size:15.4px;line-height:22.7px;font-weight:400;letter-spacing:-.01em}
+.onb .dots{position:absolute;left:0;right:0;top:401.7px;height:7.7px}
+.onb .dots i{position:absolute;top:0;width:7.7px;height:7.7px;border-radius:50%;background:#9db9e8}
+.onb .dots i.on{width:26.6px;background:#ffe04a;border-radius:999px}
+.onb .cta{position:absolute;left:15.9px;width:328.3px;height:49.3px;bottom:calc(var(--safe-b) + 28px)}
+
+.mk .cta{border-radius:999px;color:#fff;font-weight:700;font-size:18px;display:grid;place-items:center;letter-spacing:-.01em}
+.onb .cta{background:linear-gradient(180deg,#37d24b,#1fa82f);box-shadow:0 3px 0 rgba(8,120,28,.55),0 6px 14px rgba(0,40,10,.28)}
+.mk .cta:active{filter:brightness(1.1)}
+
+/* ---------- 3. Nomor HP (referensi 980px -> 360dp; Y = posisi pada gambar, termasuk status bar 24dp) ---------- */
+.hp .back{left:20.2px;top:calc(37px + var(--dy));width:20px;height:20px}
+.hp .back svg{width:19px;height:19px}
+.hp .abtn{left:134.4px;top:calc(29px + var(--dy));width:36px;height:36px}
+.hp .lang{left:186.2px;top:calc(29.4px + var(--dy));width:158.7px}
+.hp h1{position:absolute;left:20.2px;top:calc(85.3px + var(--dy));font-size:25.7px;line-height:30px;font-weight:800;letter-spacing:-.02em;color:#fff;white-space:nowrap}
+.hp .sub{position:absolute;left:20.2px;right:14px;top:calc(124.2px + var(--dy));color:#dde3ee;font-size:14.2px;line-height:17.6px;font-weight:400;letter-spacing:-.015em;white-space:nowrap}
+.hp .lbl{left:20.2px;top:calc(183px + var(--dy));font-size:13.2px;font-weight:600;color:#fff}
+.hp .lbl b{color:#ff3b3b;font-weight:700;margin-left:3px}
+.hp .cc{position:absolute;left:20.2px;top:calc(205.7px + var(--dy));width:68.3px;height:29.4px;border-radius:999px;background:var(--surf);border:.7px solid var(--surf-bd);display:flex;align-items:center;gap:6px;padding-left:10px;font-size:14px;font-weight:600}
+.hp .cc .fl{width:18.4px;height:13.2px;border-radius:7px;overflow:hidden;display:flex;flex-direction:column;flex:none}
+.hp .cc .fl i{flex:1}.hp .cc .fl i:first-child{background:#e8112d}.hp .cc .fl i:last-child{background:#f4f4f4}
+.hp .num{position:absolute;left:104px;top:calc(205.7px + var(--dy));width:236px;height:29.4px;background:none;border:0;border-bottom:1.1px solid #8a94a6;color:#fff;font:inherit;font-size:18.4px;font-weight:500;letter-spacing:-.01em;outline:0;border-radius:0;padding:2px 0 0;-webkit-user-select:text;user-select:text;caret-color:var(--neon)}
+.hp .num:focus{border-bottom-color:var(--neon)}
+.hp .num::placeholder{color:#5b6779}
+.hp .pill-link.kendala{left:19.8px;top:calc(249.4px + var(--dy));height:34.9px;padding:0 19.5px;font-size:13.6px}
+.hp .cta{position:absolute;left:14.7px;width:330.6px;height:43px;top:calc(303.8px + var(--dy));background:linear-gradient(90deg,#1ee87a,#16dc6e 50%,#12d66a);box-shadow:0 0 18px rgba(30,232,122,.18);font-size:16.9px}
+.hp .atau{left:0;right:0;text-align:center;top:calc(359px + var(--dy));font-size:13.2px;color:#b6becc}
+.hp .gbtn{position:absolute;left:15.4px;width:329.1px;height:44.1px;top:calc(385px + var(--dy));border-radius:999px;background:#101c2c;border:.8px solid #2c3a4e;display:flex;align-items:center;justify-content:center;gap:15px;color:#fff;font-weight:600;font-size:16.2px}
+.hp .gbtn svg{width:19.1px;height:19.1px}
+.hp .gbtn:active{filter:brightness(1.25)}
+.hp .from{position:absolute;left:0;right:0;top:calc(444px + var(--dy));display:flex;justify-content:center;align-items:center;gap:7px;font-size:12.5px;font-weight:500;color:#fff}
+.hp .from b{font-size:27px;font-weight:800;color:#00e676;letter-spacing:-.06em;line-height:1;transform:translateY(-1px)}
+
+/* ---------- 2. PIN (referensi 841px -> 360dp) ---------- */
+.pn .x{left:23.5px;top:calc(49.8px + var(--dy));width:16px;height:16px}
+.pn .x svg{width:15px;height:15px}
+.pn .ttl{left:59.1px;top:calc(49.6px + var(--dy));font-size:16.3px;font-weight:600;color:#fff;letter-spacing:-.015em}
+.pn .abtn{left:310.8px;top:calc(41.9px + var(--dy));width:33.4px;height:33.4px;background:#1b2736}
+.pn .abtn svg{width:15px;height:15px}
+.pn h1{position:absolute;left:19.3px;top:calc(102.9px + var(--dy));font-size:17.1px;line-height:22px;font-weight:700;color:#fff;white-space:nowrap;letter-spacing:-.015em}
+.pn .sub{position:absolute;left:19.3px;top:calc(137.4px + var(--dy));font-size:12.8px;line-height:18px;font-weight:600;color:var(--t2);white-space:nowrap}
+.pn .box{position:absolute;left:18.8px;width:322.8px;height:79.2px;top:calc(173.8px + var(--dy));border-radius:14.5px;background:#1e2a3a;border:.9px solid #3a4a5e;display:flex;align-items:center;justify-content:center;gap:27.8px}
+.pn .box i{width:15.4px;height:15.4px;border-radius:50%;border:1.3px solid #8e9aae;transition:background .1s,border-color .1s,transform .1s}
+.pn .box i.f{background:#fff;border-color:#fff;transform:scale(1.04)}
+.pn .box.err{animation:mk-shake .32s}
+@keyframes mk-shake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.pn .pill-link.masalah{left:18.8px;top:calc(273.1px + var(--dy));width:229px;height:39.4px;padding:0 0 0 18.9px;font-size:14.1px}
+.pn .pill-link.masalah svg{position:absolute;left:206.4px;top:14.2px;width:10px;height:10px}
+.pn .pw{position:absolute;left:0;right:0;top:calc(354.9px + var(--dy));display:flex;justify-content:center;align-items:center;gap:6px;font-size:14.6px;font-weight:500;color:#fff;letter-spacing:-.01em}
+.pn .pw svg{width:15.4px;height:15.4px;flex:none}
+.pn .pw b{font-size:18px;font-weight:700;letter-spacing:-.03em;margin-left:-1px}
+.pn .pad{position:absolute;left:8.25px;right:8.25px;bottom:calc(var(--safe-b) + 36px);height:min(308px,calc(100% - 400px - var(--safe-b)));display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr)}
+.pn .pad button{display:grid;place-items:center;font-size:30.8px;font-weight:700;color:#fff;border-radius:16px;letter-spacing:0}
+.pn .pad button:active{background:rgba(255,255,255,.07)}
+.pn .pad button.e{pointer-events:none}
+.pn .pad .del svg{width:32px;height:21.4px;color:#d5dbe6}
