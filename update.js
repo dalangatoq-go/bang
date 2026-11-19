@@ -1,18 +1,41 @@
 /* update.js — pasang sekali di index.html (<script src="update.js"></script>), tidak perlu diubah lagi.
    Mendaftarkan sw.js tanpa cache HTTP, mengecek pembaruan tiap aplikasi dibuka/kembali aktif/tiap 5 menit,
-   dan memuat ulang otomatis saat ada versi baru. */
+   dan menawarkan muat ulang lewat toast saat ada versi baru (tanpa reload mendadak). */
 (function () {
   if (!('serviceWorker' in navigator)) return;
-  var reloading = false;
+  var reloading = false, pending = false, bar = null;
+  var hadController = !!navigator.serviceWorker.controller;   // pemasangan pertama (belum ada controller) tidak dianggap pembaruan
   function reload() {
     if (reloading) return; reloading = true;
     try { sessionStorage.setItem('upd_t', String(Date.now())); } catch (_) {}
-    location.reload();
+    location.reload();                                         // posisi scroll tab disimpan core.js (pagehide) dan dipulihkan
   }
   function recentlyReloaded() {                       // cegah loop reload
     try { return Date.now() - Number(sessionStorage.getItem('upd_t') || 0) < 15000; } catch (_) { return false; }
   }
-  navigator.serviceWorker.addEventListener('controllerchange', function () { if (!recentlyReloaded()) reload(); });
+  function sedangMengetik() {                         // jangan ganggu pengguna yang sedang mengisi sesuatu
+    var a = document.activeElement;
+    return !!a && (/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) || a.isContentEditable);
+  }
+  /* Pembaruan tersedia: tampilkan toast "Muat ulang" (tidak memuat ulang mendadak).
+     Diterapkan otomatis saat aplikasi di latar belakang dan pengguna tidak sedang mengetik. */
+  function tawarkan() {
+    if (pending || recentlyReloaded()) return;
+    pending = true;
+    var host = document.getElementById('app') || document.body;
+    bar = document.createElement('div');
+    bar.className = 'gp-upd'; bar.setAttribute('role', 'status');
+    bar.innerHTML = '<span>Pembaruan tersedia</span><button type="button" class="go">Muat ulang</button><button type="button" class="x" aria-label="Nanti saja">\u00d7</button>';
+    host.appendChild(bar);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { bar.classList.add('show'); }); });
+    bar.querySelector('.go').addEventListener('click', reload);
+    bar.querySelector('.x').addEventListener('click', function () { bar.classList.remove('show'); });
+    if (window.GP && GP.haptic) GP.haptic('ok');
+  }
+  document.addEventListener('visibilitychange', function () {   // aplikasi pindah ke latar belakang: aman memuat ulang tanpa terlihat
+    if (document.hidden && pending && !sedangMengetik()) reload();
+  });
+  navigator.serviceWorker.addEventListener('controllerchange', function () { if (hadController && !recentlyReloaded()) tawarkan(); hadController = true; });
   /* Suara notifikasi: mynotification.mp3 dibunyikan saat push masuk dan aplikasi sedang terbuka.
      Browser mewajibkan satu sentuhan pengguna dulu, jadi audio "dibuka kuncinya" pada interaksi pertama. */
   var bunyi = null;
@@ -37,7 +60,7 @@
   window.GPBunyi = bunyikan;                                       // dipakai juga oleh js/notif.js (notifikasi realtime)
   navigator.serviceWorker.addEventListener('message', function (e) {
     if (!e.data) return;
-    if (e.data.type === 'APP_UPDATED' && !recentlyReloaded()) reload();
+    if (e.data.type === 'APP_UPDATED') tawarkan();
     if (e.data.type === 'PUSH_SOUND' && !(window.GP && window.GP.notif)) bunyikan();   // bila notif.js ada, ia yang membunyikan (dengan dedup per id)
   });
   function cek(reg) {

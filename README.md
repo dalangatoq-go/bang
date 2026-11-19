@@ -7,14 +7,16 @@ Aplikasi statis (tanpa build). Seluruh path relatif, jadi bisa di-deploy di root
 ```
 index.html  keuangan.html  riwayat.html  profil.html     # 4 tab (nav bawah saling terhubung)
 topup.html  pengaturan.html                              # halaman turunan (tombol kembali = riwayat browser)
+onboarding.html  masuk.html  pin.html                    # alur keluar/masuk (css/masuk.css, js/masuk.js)
 manifest.webmanifest  icons/                             # identitas PWA
-sw.js  update.js                                         # service worker + pembaruan otomatis
+sw.js  update.js  offline.html                           # service worker (cache dulu) + toast pembaruan + halaman offline
 push.js  mynotification.mp3                              # notifikasi push (aktifkanNotifikasi())
 js/install.js  css/install.css                           # popup "Pasang GoPay"
 css/riwayat.css  js/riwayat.js  assets/fonts/            # tab Riwayat (daftar kosong siap server, filter Tanggal/Layanan/Metode) + font Inter & Lora
 css/keuangan.css                                         # tab Keuangan (kartu sumber dana bertumpuk, simpanan, pinjaman, akun penerima)
 js/config.js                                             # URL + anon key Supabase
 vercel.json                                              # header cache sw.js & manifest
+assets/img/                                              # gambar (dulu base64 di HTML/CSS/JS), WebP; ikon: icons/ (+ monokrom, badge, splash iOS)
 ```
 
 ## Deploy
@@ -95,3 +97,43 @@ Semua halaman memakai `viewport-fit=cover`; `js/core.js` mengisi `--safe-b` (= `
 Aturan: elemen yang menempel di tepi bawah (nav, toast, banner, bottom sheet, tombol) wajib memakai `var(--safe-b)`, dan halaman yang bisa
 di-scroll wajib punya `padding-bottom` yang menyertakan `--safe-b` agar item terakhir tidak tertutup nav aplikasi maupun bilah sistem.
 Batas geser banner Beranda memakai tinggi `.nav` sebenarnya (bukan angka tetap).
+
+
+## Rasa aplikasi native (hasil audit)
+
+| Area | Perilaku sekarang |
+|---|---|
+| Pindah tab | `@view-transition` (Chrome/Android) + posisi scroll tiap tab disimpan di `sessionStorage` (core.js) |
+| Service worker | Berkas statis: cache dulu, diperbarui di belakang layar. HTML: jaringan dulu maks. 2,5 dtk lalu cache lalu `offline.html` |
+| Offline | Banner "Tidak ada koneksi" (core.js), event `gp:offline` / `gp:online`, `offline.html` untuk halaman yang belum ter-cache |
+| Pembaruan | Toast "Pembaruan tersedia / Muat ulang" (update.js); diterapkan otomatis saat app di latar belakang dan pengguna tidak sedang mengetik |
+| Tombol Back | `GP.layer.push(fnTutup)` saat sheet/popup dibuka, `GP.layer.pop()` saat ditutup lewat UI. Dipakai: sheet Riwayat, popup Keluar, popup Pasang |
+| Keyboard | `interactive-widget=resizes-content`, nav disembunyikan saat keyboard terbuka (`html.gp-kb`), kolom isian digulirkan ke area terlihat |
+| Getaran | `GP.haptic('tap'\|'ok'\|'err')`; mati sendiri bila `prefers-reduced-motion`; matikan manual: `localStorage.gp_haptic='off'` |
+| Skeleton | Kelas `.skel` di shared.css (tambahkan ke elemen yang sedang memuat, hapus saat data tiba) |
+| Zoom | Dikunci 3 lapis: viewport meta, `touch-action:pan-x pan-y`, skrip (pinch, double-tap, Ctrl+scroll/tombol) di core.js; auto-zoom iOS saat fokus input dicegah oleh `maximum-scale=1` |
+| Splash | `background_color` = `#131517`; `apple-touch-startup-image` untuk 13 ukuran iPhone/iPad (`icons/splash/`) |
+| Manifest | `display_override`, ikon `monochrome`, shortcut Riwayat; `icons/badge-96.png` dipakai badge notifikasi Android |
+
+### Menyimpan Google Fonts & supabase-js secara lokal (opsional, butuh internet)
+
+```
+curl -o js/supabase.js https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js
+```
+lalu ganti tag `<script src="https://cdn.jsdelivr.net/...">` di 6 halaman menjadi `<script src="js/supabase.js">` dan tambahkan `./js/supabase.js` ke `CORE` di `sw.js`.
+Untuk font, unduh Plus Jakarta Sans & Young Serif (woff2) ke `assets/fonts/`, tulis `@font-face` di shared.css, hapus tag Google Fonts.
+
+Setiap menambah/mengganti berkas di `assets/img/`, tambahkan juga ke daftar `GAMBAR` di `sw.js`.
+
+
+## Alur keluar / masuk (onboarding -> nomor HP -> PIN)
+
+Profil > Keluar > "Iya, keluar" membuka `onboarding.html` (location.replace, jadi Back tidak kembali ke Profil).
+Urutan: `onboarding.html` (tombol "Masukkan nomor HP-mu") -> `masuk.html` (+62, validasi 9-13 digit berawalan 8, angka 0 di depan dibuang;
+nomor terakhir dari cache profil ditampilkan lagi) -> `pin.html` (6 digit, tanpa OTP) -> `index.html`.
+Tata letak diekstrak dari 3 screenshot referensi (alur_keluar, halamanpin, Tampilan_Selamat_Datang_GoPay_Mode_Gelap) dan diskalakan ke kanvas 360dp.
+Offset status bar 24dp (`--dy`) otomatis ikut `--safe-t` bila aplikasi terpasang sebagai PWA layar penuh.
+
+**Belum terhubung ke server:** `GPMasuk.verifikasi(hp, pin)` di `js/masuk.js` saat ini mengembalikan `true` (PIN 6 digit apa pun diterima),
+karena skema PIN di Supabase belum ada. Ganti fungsi itu dengan pemeriksaan sebenarnya (kembalikan Promise<true|false>); `false` memicu animasi goyang + toast.
+Tombol Google, bantuan, bahasa, dan info menampilkan toast "belum terhubung ke server" seperti elemen lain di proyek ini.
