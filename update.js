@@ -64,6 +64,9 @@
     if (e.data.type === 'PUSH_SOUND' && !(window.GP && window.GP.notif)) bunyikan();   // bila notif.js ada, ia yang membunyikan (dengan dedup per id)
   });
   function cek(reg) {
+    var n = Date.now(), t = 0; try { t = Number(sessionStorage.getItem('upd_chk') || 0); } catch (_) {}
+    if (n - t < 60000) return;                        // maks. 1x / menit, bukan tiap pindah tab
+    try { sessionStorage.setItem('upd_chk', String(n)); } catch (_) {}
     reg.update().catch(function () {});               // cek sw.js baru
     var w = navigator.serviceWorker.controller || reg.active;
     if (w) w.postMessage({ type: 'CHECK' });          // cek index.html baru

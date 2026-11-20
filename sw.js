@@ -15,7 +15,7 @@
    Tidak ada nomor versi yang perlu dinaikkan. Bila suatu saat ingin menghapus
    semua cache paksa, ganti CACHE saja.
    ========================================================================== */
-var CACHE = 'app-runtime-2';
+var CACHE = 'app-runtime-3';
 var GAMBAR = ["./assets/img/i-0603ebaf62.webp","./assets/img/i-0a9c052ded.webp","./assets/img/i-0d779f6f0a.webp","./assets/img/i-0f1a27c62d.webp","./assets/img/i-113425935b.webp","./assets/img/i-12533ef5ed.webp","./assets/img/i-133f386bb3.webp","./assets/img/i-14d283c7ba.webp","./assets/img/i-1b71ef2d72.webp","./assets/img/i-26752357b0.webp","./assets/img/i-2eb077100f.webp","./assets/img/i-310ab556ce.webp","./assets/img/i-38c056f913.webp","./assets/img/i-399892600d.webp","./assets/img/i-412723a76f.webp","./assets/img/i-4987531081.webp","./assets/img/i-4990f5125c.webp","./assets/img/i-4ec6001018.webp","./assets/img/i-51cc3e8728.webp","./assets/img/i-5582da10fd.webp","./assets/img/i-5637ec58c8.webp","./assets/img/i-58755b2bb2.webp","./assets/img/i-59d88f649a.webp","./assets/img/i-5a00a5857c.webp","./assets/img/i-62f729f0ad.webp","./assets/img/i-73a2589fbc.webp","./assets/img/i-7fe104a0bd.webp","./assets/img/i-817ace23e9.webp","./assets/img/i-855141bace.webp","./assets/img/i-86455facb2.webp","./assets/img/i-9087459c08.webp","./assets/img/i-95e04d7c40.webp","./assets/img/i-97f44c09f3.webp","./assets/img/i-a0fffe6fc0.webp","./assets/img/i-a76903bb17.webp","./assets/img/i-ae89e0b507.webp","./assets/img/i-b2d748d117.webp","./assets/img/i-bad939e89d.webp","./assets/img/i-bba93a7d89.webp","./assets/img/i-bfd2c5e246.webp","./assets/img/i-c2daae6510.webp","./assets/img/i-c4fbc54653.webp","./assets/img/i-c856b1d1b5.webp","./assets/img/i-ce8ae3d892.webp","./assets/img/i-d4d9b3dae4.webp","./assets/img/i-d598487749.webp","./assets/img/i-dbc9cf087c.webp","./assets/img/i-dbe309b3f4.webp","./assets/img/i-de89deec3b.webp","./assets/img/i-dead7e98c6.webp","./assets/img/i-e0877b1d5f.webp","./assets/img/i-e4dcec0b68.webp","./assets/img/i-e95bef4e44.webp","./assets/img/i-ec0c7d4635.webp","./assets/img/i-eea1e47f3c.webp","./assets/img/i-f0d7c255da.webp","./assets/img/i-f26dabbdf5.webp","./assets/img/i-f7072bfa9a.webp","./assets/img/i-f7f1327249.webp","./assets/img/i-fb7ba4377f.webp","./assets/img/i-fcc8314a4d.webp","./assets/img/tp-alfamart.webp","./assets/img/tp-alfamidi.webp","./assets/img/tp-badge.webp","./assets/img/tp-bca.webp","./assets/img/tp-bni.webp","./assets/img/tp-bri.webp","./assets/img/tp-bridd.webp","./assets/img/tp-dana.webp","./assets/img/tp-indomaret.webp","./assets/img/tp-jago.webp","./assets/img/tp-lawson.webp","./assets/img/tp-mandiri.webp","./assets/img/tp-oneklik.webp","./assets/img/tp-pandaremit.webp","./assets/img/tp-shopeepay.webp","./assets/img/tp-visa.webp"];   // dibuat otomatis dari assets/img (lihat README)
 var CORE = ['./', './index.html', './keuangan.html', './riwayat.html', './profil.html', './topup.html', './pengaturan.html', './onboarding.html', './masuk.html', './pin.html', './offline.html',
             './manifest.webmanifest', './update.js', './push.js',
@@ -48,6 +48,14 @@ self.addEventListener('activate', function (e) {
   );
 });
 
+var CEK = {}, CEK_MS = 10 * 60 * 1000;
+function revalidate(event, cache, req, same, force) {
+  var k = req.url, n = Date.now();
+  if (!force && CEK[k] && n - CEK[k] < CEK_MS) return;
+  if (force && CEK[k] && n - CEK[k] < 30000) return;
+  CEK[k] = n;
+  event.waitUntil((same ? fetch(new Request(req, { cache: 'no-cache' })) : fetch(req)).then(function (r) { if (r && (r.ok || r.type === 'opaque')) return cache.put(req, r.clone()); }).catch(function () {}));
+}
 function fresh(req) {                       // ambil dari jaringan, lewati cache HTTP browser
   return fetch(new Request(req, { cache: 'no-store' }));
 }
@@ -73,31 +81,26 @@ self.addEventListener('fetch', function (event) {
   event.respondWith((async function () {
     var cache = await caches.open(CACHE);
 
-    // 1) CDN & berkas statis same-origin: cache dulu, diperbarui di belakang layar (stale-while-revalidate)
+    // 1) CDN & berkas statis: cache dulu; periksa pembaruan di belakang layar paling sering 1x / 10 menit per berkas
     if (!same || (STATIC_RE.test(url.pathname) && req.mode !== 'navigate')) {
       var hit = await cache.match(req, same ? { ignoreSearch: true } : undefined);
-      var net = (same ? fresh(req) : fetch(req)).then(function (r) {
-        if (r && (r.ok || r.type === 'opaque')) cache.put(req, r.clone());
-        return r;
-      }).catch(function () { return null; });
-      if (hit) { event.waitUntil(net); return hit; }
-      var r1 = await net;
+      if (hit) { revalidate(event, cache, req, same); return hit; }
+      var r1 = await (same ? fetch(req) : fetch(req)).then(function (r) { if (r && (r.ok || r.type === 'opaque')) cache.put(req, r.clone()); return r; }).catch(function () { return null; });
       return r1 || offlineResp(req);
     }
 
-    // 2) Halaman HTML: jaringan dulu dengan batas waktu singkat, lalu cache, lalu offline.html
+    // 2) Halaman HTML: tampilkan dari cache SEKETIKA, perbarui di belakang layar (stale-while-revalidate).
+    //    Tanpa cache (kunjungan pertama): jaringan dengan batas waktu, lalu offline.html
+    var cached = await cache.match(req, { ignoreSearch: true });
+    if (cached) { revalidate(event, cache, req, true, true); return cached; }
     try {
-      var r = await withTimeout(fresh(req), NAV_TIMEOUT);
+      var r = await withTimeout(fetch(req), NAV_TIMEOUT);
       if (r && r.ok) cache.put(req, r.clone());
       return r;
     } catch (err) {
-      var c = await cache.match(req, { ignoreSearch: true });
-      if (c) return c;
       if (req.mode === 'navigate') {
         var off = await cache.match('./offline.html');
         if (off) return off;
-        var home = await cache.match('./index.html') || await cache.match('./');
-        if (home) return home;
       }
       return offlineResp(req);
     }
