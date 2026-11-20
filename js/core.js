@@ -97,7 +97,7 @@
   // termasuk area toolbar browser sehingga nav bawah tertutup. innerHeight selalu = area yang benar-benar terlihat.
   function setH(){ document.documentElement.style.setProperty('--app-h',Math.round(window.innerHeight)+'px'); }
   setH();
-  var scaleFrame=0;
+  var scaleFrame=0,lastK=0;
   function setScale(){
     setH();
     if(scaleFrame) cancelAnimationFrame(scaleFrame);
@@ -106,6 +106,8 @@
       var w=app.clientWidth,h=app.clientHeight;
       if(!w||!h) return;
       var k=w/360;
+      if(k===lastK) return;            // ukuran sama: lewati (hindari relayout berulang)
+      lastK=k;
       if(!('zoom' in document.documentElement.style)){
         ui.style.transformOrigin='0 0';
         ui.style.transform='scale('+k+')';
@@ -113,7 +115,6 @@
         ui.style.zoom=k;
       }
       ui.style.setProperty('--k',k);
-      ui.style.height=(h/k)+'px';
     });
   }
   setScale();
@@ -123,7 +124,7 @@
   addEventListener('focus',setScale,{passive:true});
   addEventListener('load',setScale,{passive:true});
   document.addEventListener('visibilitychange',function(){ if(!document.hidden) setScale(); },{passive:true});
-  [80,300,800,1600].forEach(function(t){ setTimeout(setScale,t); });
+  [300,1200].forEach(function(t){ setTimeout(setScale,t); });
   addEventListener('orientationchange',setScale,{passive:true});
   addEventListener('pageshow',function(e){ if(e.persisted) setScale(); },{passive:true});
   if(window.visualViewport) window.visualViewport.addEventListener('resize',setScale,{passive:true});
