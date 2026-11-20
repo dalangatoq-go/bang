@@ -25,7 +25,7 @@ button{font:inherit;letter-spacing:inherit;color:inherit;background:none;border:
 
 a{color:inherit;text-decoration:none;-webkit-user-drag:none}
 /* ---------- bottom nav (FAB, ikon & ukuran diekstrak dari referensi) ---------- */
-.nav{position:absolute;left:0;right:0;bottom:0;height:calc(61px + var(--safe-b));padding-bottom:var(--safe-b);background:var(--nav);border-top:1px solid var(--nav-bd);z-index:20}
+.nav{position:absolute;left:0;right:0;bottom:0;height:calc(61px + var(--safe-b));padding-bottom:var(--safe-b);background:linear-gradient(to bottom,var(--nav) 0 61px,#000 61px 100%);border-top:1px solid var(--nav-bd);z-index:20}
 .ni{position:absolute;top:0;width:72px;height:60px;display:flex;flex-direction:column;align-items:center;color:var(--nav-ic);font-size:11.25px;line-height:1;font-weight:400}
 .ni .pl{position:absolute;left:13.5px;top:6px;width:45px;height:29px;border-radius:15px;background:transparent;transition:background .2s}
 .ni.on .pl{background:var(--pill-act)}
@@ -101,7 +101,7 @@ body.light .skel::after{background:linear-gradient(90deg,transparent,rgba(0,0,0,
 
 /* bar navigasi/gestur perangkat di bawah: selalu hitam di semua halaman (setelah splash).
    Hanya mengisi area safe-area bawah, jadi tidak menyentuh splash (manifest + apple-touch-startup-image). */
-body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom,0px);background:#000;z-index:2147483647;pointer-events:none}
+body:not([data-tab])::after,body.mk::after{content:"";position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom,0px);background:#000;z-index:2147483647;pointer-events:none}
 
 
 /* ===== Bottom bar sebagai komponen statis (js/nav.js) ===== */
