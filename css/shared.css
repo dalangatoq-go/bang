@@ -97,3 +97,7 @@ body.light .skel::after{background:linear-gradient(90deg,transparent,rgba(0,0,0,
   .scroll{scroll-behavior:auto}
 }
 
+
+/* bar navigasi/gestur perangkat di bawah: selalu hitam di semua halaman (setelah splash).
+   Hanya mengisi area safe-area bawah, jadi tidak menyentuh splash (manifest + apple-touch-startup-image). */
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom,0px);background:#000;z-index:2147483647;pointer-events:none}
