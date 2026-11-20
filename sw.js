@@ -15,7 +15,7 @@
    Tidak ada nomor versi yang perlu dinaikkan. Bila suatu saat ingin menghapus
    semua cache paksa, ganti CACHE saja.
    ========================================================================== */
-var CACHE = 'app-runtime-4';
+var CACHE = 'app-runtime-5';
 var GAMBAR = ["./assets/img/i-0603ebaf62.webp","./assets/img/i-0a9c052ded.webp","./assets/img/i-0d779f6f0a.webp","./assets/img/i-0f1a27c62d.webp","./assets/img/i-113425935b.webp","./assets/img/i-12533ef5ed.webp","./assets/img/i-133f386bb3.webp","./assets/img/i-14d283c7ba.webp","./assets/img/i-1b71ef2d72.webp","./assets/img/i-26752357b0.webp","./assets/img/i-2eb077100f.webp","./assets/img/i-310ab556ce.webp","./assets/img/i-38c056f913.webp","./assets/img/i-399892600d.webp","./assets/img/i-412723a76f.webp","./assets/img/i-4987531081.webp","./assets/img/i-4990f5125c.webp","./assets/img/i-4ec6001018.webp","./assets/img/i-51cc3e8728.webp","./assets/img/i-5582da10fd.webp","./assets/img/i-5637ec58c8.webp","./assets/img/i-58755b2bb2.webp","./assets/img/i-59d88f649a.webp","./assets/img/i-5a00a5857c.webp","./assets/img/i-62f729f0ad.webp","./assets/img/i-73a2589fbc.webp","./assets/img/i-7fe104a0bd.webp","./assets/img/i-817ace23e9.webp","./assets/img/i-855141bace.webp","./assets/img/i-86455facb2.webp","./assets/img/i-9087459c08.webp","./assets/img/i-95e04d7c40.webp","./assets/img/i-97f44c09f3.webp","./assets/img/i-a0fffe6fc0.webp","./assets/img/i-a76903bb17.webp","./assets/img/i-ae89e0b507.webp","./assets/img/i-b2d748d117.webp","./assets/img/i-bad939e89d.webp","./assets/img/i-bba93a7d89.webp","./assets/img/i-bfd2c5e246.webp","./assets/img/i-c2daae6510.webp","./assets/img/i-c4fbc54653.webp","./assets/img/i-c856b1d1b5.webp","./assets/img/i-ce8ae3d892.webp","./assets/img/i-d4d9b3dae4.webp","./assets/img/i-d598487749.webp","./assets/img/i-dbc9cf087c.webp","./assets/img/i-dbe309b3f4.webp","./assets/img/i-de89deec3b.webp","./assets/img/i-dead7e98c6.webp","./assets/img/i-e0877b1d5f.webp","./assets/img/i-e4dcec0b68.webp","./assets/img/i-e95bef4e44.webp","./assets/img/i-ec0c7d4635.webp","./assets/img/i-eea1e47f3c.webp","./assets/img/i-f0d7c255da.webp","./assets/img/i-f26dabbdf5.webp","./assets/img/i-f7072bfa9a.webp","./assets/img/i-f7f1327249.webp","./assets/img/i-fb7ba4377f.webp","./assets/img/i-fcc8314a4d.webp","./assets/img/tp-alfamart.webp","./assets/img/tp-alfamidi.webp","./assets/img/tp-badge.webp","./assets/img/tp-bca.webp","./assets/img/tp-bni.webp","./assets/img/tp-bri.webp","./assets/img/tp-bridd.webp","./assets/img/tp-dana.webp","./assets/img/tp-indomaret.webp","./assets/img/tp-jago.webp","./assets/img/tp-lawson.webp","./assets/img/tp-mandiri.webp","./assets/img/tp-oneklik.webp","./assets/img/tp-pandaremit.webp","./assets/img/tp-shopeepay.webp","./assets/img/tp-visa.webp"];   // dibuat otomatis dari assets/img (lihat README)
 var CORE = ['./', './index.html', './keuangan.html', './riwayat.html', './profil.html', './topup.html', './pengaturan.html', './onboarding.html', './masuk.html', './pin.html', './offline.html',
             './manifest.webmanifest', './update.js', './push.js',
@@ -43,20 +43,34 @@ self.addEventListener('install', function (e) {
 // Semua gambar tetap dihangatkan agar dukungan offline dipertahankan, tetapi
 // tidak ikut berebut bandwidth pada fase install/initial loading.
 var warmingImages = false;
+var IMAGE_WARM_MARKER = './__gp_internal__/images-warmed-v1';
 self.addEventListener('message', function (event) {
   if (!event.data || event.data.type !== 'WARM_IMAGES' || warmingImages) return;
   warmingImages = true;
   event.waitUntil((async function () {
     try {
       var cache = await caches.open(CACHE);
+      var marker = new Request(new URL(IMAGE_WARM_MARKER, self.registration.scope).href);
+      // Setelah satu putaran selesai, halaman berikutnya tidak perlu memeriksa
+      // ulang seluruh daftar gambar. Cache baru otomatis memulai dari awal.
+      if (await cache.match(marker)) return;
+      var semuaSiap = true;
       for (var i = 0; i < GAMBAR.length; i += 4) {
         var batch = GAMBAR.slice(i, i + 4);
-        await Promise.all(batch.map(async function (path) {
+        var hasilBatch = await Promise.all(batch.map(async function (path) {
           var url = new URL(path, self.registration.scope).href;
-          if (await cache.match(url)) return;
+          if (await cache.match(url)) return true;
           await warm(cache, url);
+          return !!(await cache.match(url));
         }));
+        if (hasilBatch.some(function (siap) { return !siap; })) semuaSiap = false;
       }
+      // Jangan tandai selesai bila ada gambar yang gagal diunduh; permintaan
+      // berikutnya boleh mencoba ulang gambar yang belum berhasil di-cache.
+      if (semuaSiap) await cache.put(marker, new Response('ok', {
+        status: 200,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+      }));
     } finally {
       warmingImages = false;
     }
@@ -136,19 +150,32 @@ async function sha(buf) {
   var d = await crypto.subtle.digest('SHA-1', buf);
   return Array.prototype.map.call(new Uint8Array(d), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
 }
-async function cekUpdate() {
-  var cache = await caches.open(CACHE);
-  var key = new Request(new URL('./index.html', self.registration.scope).href);
-  var r = await fresh(key); if (!r.ok) return false;
-  var baru = await r.clone().arrayBuffer();
-  var lama = await cache.match(key);
-  var beda = true;
-  if (lama) beda = (await sha(await lama.arrayBuffer())) !== (await sha(baru));
-  await cache.put(key, r);
-  if (beda && lama) {                                          // versi baru: segarkan semua berkas inti agar siap saat muat ulang
-    await Promise.all(CORE.map(function (u) { return warm(cache, u); }));
-  }
-  return beda && !!lama;
+var cekUpdateAktif = null;
+function cekUpdate() {
+  // Beberapa tab/halaman dapat meminta pemeriksaan pada waktu berdekatan.
+  // Gunakan satu pemeriksaan bersama agar tidak mengunduh dan membandingkan index berulang.
+  if (cekUpdateAktif) return cekUpdateAktif;
+  cekUpdateAktif = (async function () {
+    var cache = await caches.open(CACHE);
+    var key = new Request(new URL('./index.html', self.registration.scope).href);
+    var r = await fresh(key); if (!r.ok) return false;
+    var baru = await r.clone().arrayBuffer();
+    var lama = await cache.match(key);
+    var beda = true;
+    if (lama) beda = (await sha(await lama.arrayBuffer())) !== (await sha(baru));
+    await cache.put(key, r);
+    if (beda && lama) {                                      // versi baru: segarkan semua berkas inti agar siap saat muat ulang
+      await Promise.all(CORE.map(function (u) { return warm(cache, u); }));
+    }
+    return beda && !!lama;
+  })();
+  return cekUpdateAktif.then(function (hasil) {
+    cekUpdateAktif = null;
+    return hasil;
+  }, function (err) {
+    cekUpdateAktif = null;
+    throw err;
+  });
 }
 self.addEventListener('message', function (event) {
   var m = event.data || {};
