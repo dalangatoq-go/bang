@@ -6,6 +6,7 @@ Aplikasi statis (tanpa build). Seluruh path relatif, jadi bisa di-deploy di root
 
 ```
 index.html  keuangan.html  riwayat.html  profil.html     # 4 tab (nav bawah saling terhubung)
+js/nav.js                                                # satu-satunya sumber bottom bar (hanya 4 tab; halaman fitur tanpa bottom bar)
 topup.html  pengaturan.html                              # halaman turunan (tombol kembali = riwayat browser)
 onboarding.html  masuk.html  pin.html                    # alur keluar/masuk (css/masuk.css, js/masuk.js)
 manifest.webmanifest  icons/                             # identitas PWA

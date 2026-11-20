@@ -10,7 +10,7 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#00aed6",
-  "theme_color": "#025c90",
+  "theme_color": "#000000",
   "categories": [
     "finance"
   ],
