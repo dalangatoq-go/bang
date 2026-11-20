@@ -11,10 +11,13 @@ body.light{
   --lihat-bg:#e9f5ea; --lihat-bd:#b9ddbd; --sw-bg:#e4e8eb;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{touch-action:pan-x pan-y;height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;background:#000;font-family:'Plus Jakarta Sans','Inter','Roboto',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--txt);-webkit-font-smoothing:antialiased;letter-spacing:-.02em}
+html{background:#131517}html:has(body.light){background:#f2f4f6}
+html,body{touch-action:pan-x pan-y;height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;font-family:'Plus Jakarta Sans','Inter','Roboto',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--txt);-webkit-font-smoothing:antialiased;letter-spacing:-.02em}
 button{font:inherit;letter-spacing:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation}
 .app{position:relative;width:100%;max-width:430px;height:100vh;height:var(--app-h,100vh);height:100dvh;margin:0 auto;background:var(--page);overflow:hidden;touch-action:pan-x pan-y;isolation:isolate}
 #ui{position:absolute;left:0;top:0;width:360px;height:100%;overflow:hidden;background:var(--page);--k:1;--safe-t:calc(env(safe-area-inset-top,0px) / var(--k));--safe-b:calc(env(safe-area-inset-bottom,0px) / var(--k))}
+/* jalur cadangan (tanpa CSS zoom): kanvas diskalakan dengan transform, jadi tinggi dibagi k */
+@supports not (zoom:1){#ui{height:calc(100% / var(--k))}}
 .scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;scrollbar-width:none}
 .scroll::-webkit-scrollbar{display:none}
 .content{position:relative;padding-bottom:calc(156px + var(--safe-b))}
@@ -60,12 +63,10 @@ a{color:inherit;text-decoration:none;-webkit-user-drag:none}
 /* ===== Rasa aplikasi native (hasil audit) ===== */
 /* transisi mulus antar halaman (Chrome/Android/Edge; browser lain mengabaikan) */
 @view-transition{navigation:auto}
-::view-transition-old(root){animation:gp-out .12s ease both}
-::view-transition-new(root){animation:gp-in .18s ease both}
+::view-transition-old(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){animation:gp-in .14s ease both;mix-blend-mode:normal}
 @keyframes gp-out{to{opacity:0}}
 @keyframes gp-in{from{opacity:0}}
-@supports not (view-transition-name:none){html.gp-ready .app{animation:gp-fade .16s ease both}}
-@keyframes gp-fade{from{opacity:.0}to{opacity:1}}
 
 /* banner offline */
 .gp-off{position:absolute;left:0;right:0;top:0;z-index:60;padding:calc(var(--safe-t) + 6px) 12px 6px;background:#3a3f45;color:#fff;font-size:12px;font-weight:600;text-align:center;line-height:16px;transform:translateY(-110%);transition:transform .22s cubic-bezier(.2,.8,.2,1);pointer-events:none}
