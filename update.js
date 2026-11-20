@@ -71,6 +71,18 @@
     var w = navigator.serviceWorker.controller || reg.active;
     if (w) w.postMessage({ type: 'CHECK' });          // cek index.html baru
   }
+  function hangatkanGambar(reg) {
+    var kirim = function () {
+      var worker = navigator.serviceWorker.controller || reg.active;
+      if (worker) worker.postMessage({ type: 'WARM_IMAGES' });
+    };
+    if ('requestIdleCallback' in window) requestIdleCallback(kirim, { timeout: 4000 });
+    else setTimeout(kirim, 2500);
+  }
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.ready.then(hangatkanGambar).catch(function () {});
+  }, { once: true });
+
   navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (reg) {
     cek(reg);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) cek(reg); });

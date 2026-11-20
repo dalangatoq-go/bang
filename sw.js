@@ -23,7 +23,7 @@ var CORE = ['./', './index.html', './keuangan.html', './riwayat.html', './profil
             './js/config.js', './js/core.js', './js/nav.js', './js/beranda.js', './js/profil.js', './js/topup.js', './js/pengaturan.js', './js/install.js', './js/riwayat.js', './js/notif.js', './js/masuk.js',
             './icons/icon-192.png', './icons/icon-512.png', './icons/badge-96.png', './mynotification.mp3',
             './assets/beranda-lines.svg', './assets/beranda-glow.png',
-            './assets/fonts/inter-400.woff', './assets/fonts/inter-500.woff', './assets/fonts/inter-600.woff', './assets/fonts/inter-700.woff', './assets/fonts/lora-700.woff'].concat(GAMBAR);   // dihangatkan saat install (opsional, gagal pun tak apa)
+            './assets/fonts/inter-400.woff', './assets/fonts/inter-500.woff', './assets/fonts/inter-600.woff', './assets/fonts/inter-700.woff', './assets/fonts/lora-700.woff'];   // shell inti; gambar dihangatkan setelah tampilan pertama siap
 var NAV_TIMEOUT = 2500;                                         // ms; HTML lewat ini pakai cache jika ada
 var STATIC_RE = /\.(css|js|woff2?|png|webp|svg|jpg|jpeg|gif|ico|mp3|webmanifest)$/i;
 var CDN_OK = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com'];
@@ -37,6 +37,30 @@ self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) {
     return Promise.all(CORE.map(function (u) { return warm(c, u); }).concat(CDN_WARM.map(function (u) { return warm(c, new Request(u, { mode: 'no-cors' }), {mode: 'no-cors'}); })));
   }));
+});
+
+// Gambar non-kritis di-cache setelah halaman pertama selesai dirender.
+// Semua gambar tetap dihangatkan agar dukungan offline dipertahankan, tetapi
+// tidak ikut berebut bandwidth pada fase install/initial loading.
+var warmingImages = false;
+self.addEventListener('message', function (event) {
+  if (!event.data || event.data.type !== 'WARM_IMAGES' || warmingImages) return;
+  warmingImages = true;
+  event.waitUntil((async function () {
+    try {
+      var cache = await caches.open(CACHE);
+      for (var i = 0; i < GAMBAR.length; i += 4) {
+        var batch = GAMBAR.slice(i, i + 4);
+        await Promise.all(batch.map(async function (path) {
+          var url = new URL(path, self.registration.scope).href;
+          if (await cache.match(url)) return;
+          await warm(cache, url);
+        }));
+      }
+    } finally {
+      warmingImages = false;
+    }
+  })());
 });
 
 self.addEventListener('activate', function (e) {
