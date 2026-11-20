@@ -24,15 +24,20 @@
     };
     var cached=function(){try{return JSON.parse(localStorage.getItem(pKey)||'null')}catch(_){return null}};
     var c0=cached(); if(c0) renderProfil(c0);
+    var profilLoad=null,profilVersion=0;
     var setProfil=function(d){
-      if(!d) return; renderProfil(d);
+      if(!d) return; profilVersion++; renderProfil(d);
       try{localStorage.setItem(pKey,JSON.stringify({nama:d.nama,nomor_hape:d.nomor_hape,email:d.email}));}catch(_){}
     };
     var loadProfil=function(){
-      sb.from('profil').select('nama,nomor_hape,email').eq('id',1).single().then(function(r){
+      if(profilLoad) return profilLoad;
+      var version=profilVersion;
+      profilLoad=sb.from('profil').select('nama,nomor_hape,email').eq('id',1).single().then(function(r){
         if(r.error||!r.data){say('Gagal memuat profil');return;}
-        setProfil(r.data);
-      });
+        // Query lama tidak boleh menimpa data yang lebih baru dari Realtime.
+        if(version===profilVersion) setProfil(r.data);
+      }).catch(function(){say('Gagal memuat profil')}).then(function(){profilLoad=null;});
+      return profilLoad;
     };
     loadProfil();
     sb.channel('profil-1')

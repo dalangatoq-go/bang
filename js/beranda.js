@@ -19,9 +19,14 @@
       while(s.scrollWidth>avail && fs>8 && tries++<40){fs-=.25;b.style.fontSize=fs+'px';}
     });
   }
-  fitHeader();
-  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitHeader);
-  addEventListener('resize',fitHeader);
+  var fitFrame=0;
+  function jadwalkanFitHeader(){
+    if(fitFrame) return;
+    fitFrame=requestAnimationFrame(function(){fitFrame=0;fitHeader()});
+  }
+  jadwalkanFitHeader();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(jadwalkanFitHeader);
+  addEventListener('resize',jadwalkanFitHeader,{passive:true});
 
   // saldo
   var hidden=false,amt=$('#amt'),saldo=null;
@@ -34,12 +39,17 @@
   // saldo = kolom nominal tabel g (id=1), realtime lewat Supabase
   var sb=GP.sb();
   if(sb){
-    var setSaldo=function(v){var n=Number(v);if(isFinite(n)){saldo=n;renderSaldo();}};
+    var saldoLoad=null,saldoVersion=0;
+    var setSaldo=function(v){var n=Number(v);if(isFinite(n)){saldo=n;saldoVersion++;renderSaldo();}};
     var loadSaldo=function(){
-      sb.from('g').select('nominal').eq('id',1).single().then(function(r){
+      if(saldoLoad) return saldoLoad;
+      var version=saldoVersion;
+      saldoLoad=sb.from('g').select('nominal').eq('id',1).single().then(function(r){
         if(r.error||!r.data){say('Gagal memuat saldo');return;}
-        setSaldo(r.data.nominal);
-      });
+        // Jangan biarkan hasil query yang lebih lama menimpa update Realtime.
+        if(version===saldoVersion) setSaldo(r.data.nominal);
+      }).catch(function(){say('Gagal memuat saldo')}).then(function(){saldoLoad=null;});
+      return saldoLoad;
     };
     loadSaldo();
     sb.channel('saldo-g')

@@ -92,7 +92,7 @@ var GPRiwayat=window.GPRiwayat={
    Cadangan: muat ulang penuh saat channel (re)connect, halaman kembali terlihat, online lagi, tarik-untuk-segarkan,
    dan tiap 20 dtk selama channel realtime belum tersambung. */
 var KOLOM="id,gx_id,terjadi_pada,jenis,judul,subjudul,nominal,satuan,arah,metode,status",BATAS=300;
-var peta={},ws=null,rt=0,live=false,tunggu=null;
+var peta={},ws=null,rt=0,live=false,tunggu=null,muatAktif=null,muatUlang=false,dataVersion=0;
 function ubah(r){
  return {id:"h"+r.id,tanggal:r.terjadi_pada,jenis:r.jenis,judul:r.judul,subjudul:r.subjudul,
   nominal:r.nominal,satuan:r.satuan,arah:r.arah,metode:r.metode,status:r.status};
@@ -110,21 +110,29 @@ function ambil(){
  });
 }
 function muat(diam){
+ if(muatAktif) return muatAktif;
  if(!diam&&!Object.keys(peta).length) GPRiwayat.loading();
- return ambil().then(function(items){
+ var versi=dataVersion;
+ muatAktif=ambil().then(function(items){
+  // Bila Realtime berubah selama query berjalan, jangan timpa perubahan itu dengan snapshot lama.
+  if(versi!==dataVersion){muatUlang=true;return;}
   peta={}; items.forEach(function(x){peta[x.id]=x});
   gambar();
  }).catch(function(e){
   if(!Object.keys(peta).length) GPRiwayat.error(e&&e.message);   // data lama tetap tampil bila muat ulang diam-diam gagal
+ }).then(function(){
+  muatAktif=null;
+  if(muatUlang){muatUlang=false;muat(true);}
  });
+ return muatAktif;
 }
 function sambungRealtime(){
  var sb=GP.sb(); if(!sb||ws) return;
  ws=sb.channel("riwayat-history")
   .on("postgres_changes",{event:"*",schema:"public",table:"history"},function(p){
-   if(p.eventType==="DELETE"){ if(p.old&&p.old.id!=null) delete peta["h"+p.old.id]; gambar(); return; }
+   if(p.eventType==="DELETE"){ dataVersion++; if(p.old&&p.old.id!=null) delete peta["h"+p.old.id]; gambar(); return; }
    var r=p.new; if(!r||r.id==null||!r.terjadi_pada) return muat(true);
-   peta["h"+r.id]=ubah(r); gambar();
+   dataVersion++; peta["h"+r.id]=ubah(r); gambar();
   })
   .subscribe(function(st){
    live=(st==="SUBSCRIBED");

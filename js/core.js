@@ -95,14 +95,21 @@
   // Tinggi mengikuti app container agar safe-area dan viewport dinamis konsisten.
   // Cadangan tinggi untuk browser tanpa dukungan 100dvh (iOS < 15.4, Android WebView lama): 100vh di sana
   // termasuk area toolbar browser sehingga nav bawah tertutup. innerHeight selalu = area yang benar-benar terlihat.
-  function setH(){ document.documentElement.style.setProperty('--app-h',Math.round(window.innerHeight)+'px'); }
-  setH();
-  var scaleFrame=0,lastK=0;
+  var lastAppH=document.documentElement.style.getPropertyValue('--app-h')||'',scaleFrame=0,lastK=0;
+  function setH(){
+    var h=Math.round(window.innerHeight)+'px';
+    if(h!==lastAppH){
+      lastAppH=h;
+      document.documentElement.style.setProperty('--app-h',h);
+    }
+  }
   function setScale(){
-    setH();
-    if(scaleFrame) cancelAnimationFrame(scaleFrame);
+    // Banyak sumber resize dapat aktif bersamaan di Android standalone.
+    // Satu frame sudah cukup karena ukuran dibaca ulang saat callback berjalan.
+    if(scaleFrame) return;
     scaleFrame=requestAnimationFrame(function(){
       scaleFrame=0;
+      setH();
       var w=app.clientWidth,h=app.clientHeight;
       if(!w||!h) return;
       var k=w/360;
