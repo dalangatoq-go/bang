@@ -101,3 +101,15 @@ body.light .skel::after{background:linear-gradient(90deg,transparent,rgba(0,0,0,
 /* bar navigasi/gestur perangkat di bawah: selalu hitam di semua halaman (setelah splash).
    Hanya mengisi area safe-area bawah, jadi tidak menyentuh splash (manifest + apple-touch-startup-image). */
 body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom,0px);background:#000;z-index:2147483647;pointer-events:none}
+
+
+/* ===== Bottom bar sebagai komponen statis (js/nav.js) ===== */
+/* Halaman fitur & alur masuk (tanpa data-tab tab) tidak pernah menampilkan bottom bar. */
+body:not([data-tab]) .nav,body.mk .nav{display:none!important}
+/* Saat pindah antar tab, bar tetap diam di tempat (tidak ikut memudar bersama isi halaman).
+   Bila halaman tujuan/asal tidak punya bar (halaman fitur), bar memudar bersama halaman. */
+.nav{view-transition-name:gp-nav}
+::view-transition-group(gp-nav){animation:none}
+::view-transition-old(gp-nav),::view-transition-new(gp-nav){animation:none}
+::view-transition-old(gp-nav):only-child{animation:gp-out .12s ease both}
+::view-transition-new(gp-nav):only-child{animation:gp-in .18s ease both}
