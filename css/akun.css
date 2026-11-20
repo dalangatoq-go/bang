@@ -1,0 +1,20 @@
+/* akun.css — halaman akun tersimpan (awal setelah Keluar di Profil). Memakai variabel & komponen dasar dari css/masuk.css */
+.ak .lang{background:rgba(255,255,255,.07)}
+body.ak .app,body.ak #ui{background:radial-gradient(120% 55% at 50% 64%,rgba(24,64,150,.26),transparent 70%),var(--bg)}
+.ak .lang{left:186.2px;top:calc(29.4px + var(--dy));width:158.7px}
+.ak .blk{position:absolute;left:0;right:0;bottom:calc(var(--safe-b) + 36px)}
+.ak h1{padding:0 20.2px;font-family:'MkLora','Young Serif',Georgia,'Times New Roman',serif;font-size:25.7px;line-height:30px;font-weight:700;letter-spacing:-.03em;color:#fff;white-space:nowrap}
+.ak .sub{padding:0 14px 0 20.2px;margin-top:8px;color:#fff;font-size:14.2px;line-height:17.6px;font-weight:400;letter-spacing:-.015em;white-space:nowrap}
+.ak .acc{display:flex;align-items:center;gap:12px;width:329.1px;height:57px;margin:30px 0 0 15.4px;padding:0 20px 0 9px;border-radius:999px;text-align:left;color:#fff;background:linear-gradient(180deg,#3fd058,#0b9a2c);box-shadow:0 0 26px rgba(30,200,70,.32),inset 0 1px 0 rgba(255,255,255,.22)}
+.ak .acc:active{filter:brightness(1.1)}
+.ak .av{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:2px solid #fff;background:linear-gradient(135deg,#e56fd2,#b44bb2);font-size:19px;font-weight:700;line-height:1;text-transform:uppercase}
+.ak .who{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.ak .who b,.ak .who span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ak .who b{font-size:15.6px;font-weight:700;line-height:19px;letter-spacing:-.015em}
+.ak .who span{font-size:14.4px;font-weight:500;line-height:18px;letter-spacing:-.01em}
+.ak .acc svg{flex:none;width:17px;height:17px}
+.ak .atau{margin-top:19px;text-align:center;font-size:13.2px;line-height:16px;color:#fff}
+.ak .oth{display:grid;place-items:center;width:329.1px;height:44.1px;margin:17px 0 0 15.4px;border-radius:999px;border:1.2px solid #0a8a16;background:rgba(8,20,14,.7);color:#14b02b;font-size:16.2px;font-weight:700;letter-spacing:-.01em}
+.ak .oth:active{filter:brightness(1.25)}
+.ak .from{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:34px;font-size:12.5px;font-weight:600;color:#fff}
+.ak .from b{font-size:25px;font-weight:500;color:#00e676;letter-spacing:-.05em;line-height:1;transform:translateY(-1px)}

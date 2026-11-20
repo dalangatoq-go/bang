@@ -1,3 +1,4 @@
+@font-face{font-family:'MkLora';font-weight:700;font-style:normal;font-display:swap;src:url(../assets/fonts/lora-700.woff) format('woff')}
 /* ===== masuk.css — alur keluar/masuk: onboarding, nomor HP, PIN (diekstrak dari 3 screenshot, skala 360dp) ===== */
 body.mk #ui{--dy:max(calc(var(--safe-t) - 24px),0px)}
 body.mk{--bg:#07111f;--surf:#1b2736;--surf-bd:#2f3e52;--neon:#1ed760;--neon-bg:#0b3a2a;--t2:#a9b4c8}
@@ -36,7 +37,7 @@ body.onb .abtn .qm{color:#0a55c8}
 .hp .back svg{width:19px;height:19px}
 .hp .abtn{left:134.4px;top:calc(29px + var(--dy));width:36px;height:36px}
 .hp .lang{left:186.2px;top:calc(29.4px + var(--dy));width:158.7px}
-.hp h1{position:absolute;left:20.2px;top:calc(85.3px + var(--dy));font-size:25.7px;line-height:30px;font-weight:800;letter-spacing:-.02em;color:#fff;white-space:nowrap}
+.hp h1{position:absolute;left:20.2px;top:calc(85.3px + var(--dy));font-family:'MkLora','Young Serif',Georgia,'Times New Roman',serif;font-size:25.7px;line-height:30px;font-weight:700;letter-spacing:-.03em;color:#fff;white-space:nowrap}
 .hp .sub{position:absolute;left:20.2px;right:14px;top:calc(124.2px + var(--dy));color:#dde3ee;font-size:14.2px;line-height:17.6px;font-weight:400;letter-spacing:-.015em;white-space:nowrap}
 .hp .lbl{left:20.2px;top:calc(183px + var(--dy));font-size:13.2px;font-weight:600;color:#fff}
 .hp .lbl b{color:#ff3b3b;font-weight:700;margin-left:3px}
@@ -78,3 +79,17 @@ body.onb .abtn .qm{color:#0a55c8}
 .pn .pad button:active{background:rgba(255,255,255,.07)}
 .pn .pad button.e{pointer-events:none}
 .pn .pad .del svg{width:32px;height:21.4px;color:#d5dbe6}
+
+/* ---------- Penyesuaian layar Nomor HP terhadap referensi ---------- */
+/* tombol bulat & pil bahasa: lebih gelap/transparan, hampir tanpa tepi */
+.hp .abtn,.hp .lang{background:rgba(255,255,255,.07)}
+.hp .cc{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.07)}
+/* tautan hijau: latar hijau gelap samar */
+.hp .pill-link.kendala{background:rgba(30,215,96,.11);color:#22c15f}
+/* tombol Lanjut: nonaktif (abu terang, teks putih) sampai nomor valid, lalu hijau */
+.hp .cta{transition:background .18s,box-shadow .18s,color .18s}
+.hp .cta.off{background:#d9dadf;box-shadow:none;color:#fff;cursor:default}
+.hp .cta.off:active{filter:none}
+/* logo goto: lebih tipis & kecil */
+.hp .from{font-weight:600}
+.hp .from b{font-size:25px;font-weight:500;letter-spacing:-.05em}
