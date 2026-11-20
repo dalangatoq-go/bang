@@ -25,13 +25,21 @@
     var inp=$('#hp'),go=$('#hp-lanjut');
     // nomor terakhir yang tersimpan (cache profil) ditampilkan lagi, seperti referensi
     safe(function(){var c=JSON.parse(localStorage.getItem('profil_cache_v1')||'null'); if(c&&c.nomor_hape) inp.value=nomorBersih(c.nomor_hape).slice(0,13);});
+    function valid(v){return v.length>=9&&v.length<=13&&v.charAt(0)==='8'}
+    function sinkron(){
+      var ok=valid(nomorBersih(inp.value));
+      go.classList.toggle('off',!ok);
+      go.setAttribute('aria-disabled',ok?'false':'true');
+    }
     inp.addEventListener('input',function(){
       var v=inp.value.replace(/\D/g,'').replace(/^0+/,'');
       if(v!==inp.value) inp.value=v;
+      sinkron();
     });
+    sinkron();
     function lanjut(){
       var v=nomorBersih(inp.value);
-      if(v.length<9||v.length>13||v.charAt(0)!=='8'){ GP.haptic('err'); GP.say('Nomor HP tidak valid. Contoh: 81234567890'); inp.focus(); return; }
+      if(!valid(v)){ inp.focus(); return; }   // tombol nonaktif: tidak ada pesan, sesuai acuan
       safe(function(){sessionStorage.setItem('gp_hp',v)});
       location.href='pin.html';
     }
@@ -59,6 +67,7 @@
         if(ok===false) return gagal();
         GP.haptic('ok');
         safe(function(){sessionStorage.removeItem('gp_hp')});
+        GP.masuk();   // sesi aktif lagi
         location.replace(GM.tujuan);
       },function(){gagal('Gagal memeriksa PIN. Periksa koneksi.')});
     }

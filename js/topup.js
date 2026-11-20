@@ -27,7 +27,7 @@ function render(){let h='';
   h+=`<div class="tp-sec"><div class="tp-sh"><div><b>${s.title}</b><small class="tp-${s.o?'o':''}">${s.sub}</small></div>${s.pill?`<span class="tp-pill">${s.pill}</span>`:''}</div><div class="tp-grid">${all.map(item).join('')}</div>${s.more.length&&!term&&chip!='free'?`<button class="tp-more" onclick="__tp.tog('${s.id}')">${opn[s.id]?'Lihat lebih sedikit':'Lihat lebih banyak'} ${chev}</button>`:''}</div>`});
  document.getElementById('tp-list').innerHTML=h||'<div class="tp-empty">Metode tidak ditemukan</div>'}
 document.getElementById('tp-q').addEventListener('input',e=>{term=e.target.value.trim().toLowerCase();render()});
-let tm;function t(m){m=m+' — belum terhubung ke server';const e=document.getElementById('tp-toast');e.textContent=m;e.classList.add('tp-s');clearTimeout(tm);tm=setTimeout(()=>e.classList.remove('tp-s'),1400)}
+function t(){} /* pesan "belum terhubung ke server" dihapus */
 
 
 function glow(){const u=PR.getBoundingClientRect().width/100||.5,sh=document.querySelector('#tp .tp-shh');if(!sh)return;

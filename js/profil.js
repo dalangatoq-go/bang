@@ -55,8 +55,10 @@
   $('#lo-yes').addEventListener('click',function(){
     closeLo();
     if(GP.haptic) GP.haptic('ok');
-    // alur keluar: Profil -> onboarding -> nomor HP -> PIN. replace agar tombol Back tidak kembali ke Profil.
-    setTimeout(function(){ location.replace('onboarding.html'); },160);   // beri waktu GP.layer.pop() menuntaskan history.back()
+    GP.keluar();   // putuskan sesi: halaman aplikasi lain dialihkan ke akun.html sampai masuk lagi
+    // alur keluar: Profil -> akun tersimpan (akun.html) -> [Lanjut sebagai ... = Beranda] atau [Akun Lain = onboarding -> nomor HP -> PIN].
+    // replace agar tombol Back tidak kembali ke Profil.
+    setTimeout(function(){ location.replace('akun.html'); },160);   // beri waktu GP.layer.pop() menuntaskan history.back()
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&LO.classList.contains('lo-on'))closeLo()});
   // tombol back perangkat saat popup terbuka: ditangani GP.layer (core.js) -> hideLo()

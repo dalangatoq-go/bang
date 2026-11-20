@@ -5,6 +5,13 @@
   var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
   function safe(f){try{return f()}catch(_){}}
   var GP=window.GP=window.GP||{};
+  // ---- Sesi: setelah Keluar (localStorage gp_sesi='keluar') semua halaman aplikasi dialihkan ke akun.html
+  // sampai pengguna masuk lagi (tombol hijau di akun.html atau alur nomor HP -> PIN). Halaman alur masuk (body.mk) dikecualikan.
+  GP.keluar=function(){safe(function(){localStorage.setItem('gp_sesi','keluar')})};
+  GP.masuk=function(){safe(function(){localStorage.removeItem('gp_sesi')})};
+  function sesiPutus(){return !document.body.classList.contains('mk')&&safe(function(){return localStorage.getItem('gp_sesi')})==='keluar'}
+  if(sesiPutus()){ document.documentElement.style.display='none'; location.replace('akun.html'); return; }
+  addEventListener('pageshow',function(e){ if(e.persisted&&sesiPutus()) location.replace('akun.html'); });   // kembali dari cache bfcache
   var app=$('#app'),ui=$('#ui'),toastEl=$('#toast'),tt;
   var TAB=document.body.getAttribute('data-tab')||'';
 
@@ -81,7 +88,7 @@
     if(el.hasAttribute('data-go')) return;
     var t=el.getAttribute('data-t'),href=el.getAttribute('data-href');
     if(href){var a=document.createElement('a');a.href=href;a.target='_blank';a.rel='noopener noreferrer';document.body.appendChild(a);a.click();a.remove();return}
-    GP.say(/memerlukan/.test(t)?t+' (belum terhubung ke server)':t+' \u2014 belum terhubung ke server');
+    /* placeholder "belum terhubung ke server" dihapus: ketukan pada item belum aktif tidak menampilkan pesan */
   });
 
   // ---- skala kanvas native: desain dasar 360 dp, memenuhi lebar perangkat
@@ -193,7 +200,7 @@
           setTimeout(function(){spinning=false;back()},HOLD);
           return;
         }
-        back(refreshed?function(){GP.say(MSG)}:null);
+        back(null);
       }
       // kecepatan tarik (px/ms) dari sentuhan 120 ms terakhir; 0 bila jari sempat berhenti
       function velocity(){

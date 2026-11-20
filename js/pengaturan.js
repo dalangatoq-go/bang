@@ -6,7 +6,7 @@
   function closeSt(){GP.back('profil.html')}
   document.addEventListener('click',function(e){
     var r=e.target.closest('#st .st-row');
-    if(r){var m=r.getAttribute('data-m');say(m==='Hapus akun'?'Hapus akun memerlukan layanan GoPay (belum terhubung ke server)':m+' \u2014 belum terhubung ke server')}
+    /* pesan "belum terhubung ke server" dihapus */
   });
   // muat-kan teks ke lebar kolom: kecilkan seragam bila ada yang menabrak chevron
   function fit(){
