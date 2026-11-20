@@ -65,6 +65,10 @@ a{color:inherit;text-decoration:none;-webkit-user-drag:none}
 @view-transition{navigation:auto}
 ::view-transition-old(root){animation:none;mix-blend-mode:normal}
 ::view-transition-new(root){animation:gp-in .14s ease both;mix-blend-mode:normal}
+/* Isi kanvas transisi dengan warna halaman agar area snapshot transparan tidak
+   memperlihatkan latar hitam default Chromium selama perpindahan dokumen. */
+:root::view-transition{background-color:#131517}
+html:has(body.light)::view-transition{background-color:#f2f4f6}
 @keyframes gp-out{to{opacity:0}}
 @keyframes gp-in{from{opacity:0}}
 
