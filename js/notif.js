@@ -97,13 +97,17 @@
 
   /* ---- jalur 1: Supabase Realtime (tercepat) ---- */
   var sb = GP.sb && GP.sb();
-  if (sb) {
+  function prosesHistoryRealtime(p) {
+    var r = p && p.new;
+    if (!r || r.gx_id == null) return;                           // hanya dari aksi Gx, seperti trigger server
+    tampil(r.id, pesan(r), 'GoPay');
+  }
+  // Halaman Riwayat sudah memiliki subscription untuk semua perubahan history.
+  // Pakai event INSERT dari kanal itu agar tidak membuka kanal history kedua.
+  GP._notifHistoryRealtime = prosesHistoryRealtime;
+  if (sb && document.body.getAttribute('data-tab') !== 'Riwayat') {
     sb.channel('notif-history')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'history' }, function (p) {
-        var r = p.new;
-        if (!r || r.gx_id == null) return;                       // hanya dari aksi Gx, seperti trigger server
-        tampil(r.id, pesan(r), 'GoPay');
-      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'history' }, prosesHistoryRealtime)
       .subscribe();
   }
 

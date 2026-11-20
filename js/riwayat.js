@@ -130,6 +130,8 @@ function sambungRealtime(){
  var sb=GP.sb(); if(!sb||ws) return;
  ws=sb.channel("riwayat-history")
   .on("postgres_changes",{event:"*",schema:"public",table:"history"},function(p){
+   // Kanal ini juga menangani notifikasi INSERT agar tidak perlu kanal history kedua.
+   if(p.eventType==="INSERT"&&GP._notifHistoryRealtime) GP._notifHistoryRealtime(p);
    if(p.eventType==="DELETE"){ dataVersion++; if(p.old&&p.old.id!=null) delete peta["h"+p.old.id]; gambar(); return; }
    var r=p.new; if(!r||r.id==null||!r.terjadi_pada) return muat(true);
    dataVersion++; peta["h"+r.id]=ubah(r); gambar();
