@@ -104,6 +104,6 @@
   // saklar tema (tersimpan, dipakai juga oleh halaman lain)
   $('#sw').addEventListener('click',function(){
     var light=document.body.classList.toggle('light'); GP.theme(light);
-    $('meta[name=theme-color]').setAttribute('content','#025c90');
+    $('meta[name=theme-color]').setAttribute('content','#000000');
   });
 })();

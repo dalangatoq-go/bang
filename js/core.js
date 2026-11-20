@@ -118,6 +118,12 @@
   }
   setScale();
   addEventListener('resize',setScale,{passive:true});
+  // Ukur ulang saat halaman tampil lagi, jendela fokus, atau tab kembali terlihat, plus beberapa kali sesaat setelah dibuka:
+  // tinggi jendela PWA terpasang bisa baru final setelah bar sistem selesai menyesuaikan, sehingga ukuran awal bisa basi.
+  addEventListener('focus',setScale,{passive:true});
+  addEventListener('load',setScale,{passive:true});
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) setScale(); },{passive:true});
+  [80,300,800,1600].forEach(function(t){ setTimeout(setScale,t); });
   addEventListener('orientationchange',setScale,{passive:true});
   addEventListener('pageshow',function(e){ if(e.persisted) setScale(); },{passive:true});
   if(window.visualViewport) window.visualViewport.addEventListener('resize',setScale,{passive:true});
